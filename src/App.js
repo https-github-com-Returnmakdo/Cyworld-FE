@@ -1,5 +1,14 @@
+import React from "react";
+import Router from "./shared/Router";
+import { GlobalStyle } from "./shared/GlobalStyle";
+
 function App() {
-  return <div>시작</div>;
+  return (
+    <>
+      <Router />
+      <GlobalStyle />
+    </>
+  );
 }
 
 export default App;
