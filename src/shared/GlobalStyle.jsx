@@ -52,6 +52,11 @@ a {
 
 * { 
 	box-sizing: border-box;
+	font-size: 1rem;
 }
 /* 원하는대로 박스 크기를 고정할 수 있다. */
+
+.logopic {
+ width: 500px;
+}
 `;
