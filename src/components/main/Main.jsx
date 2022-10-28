@@ -27,7 +27,7 @@ const Domain = styled.div`
   display: flex;
   flex: 0.1;
   margin: 15px 0px 0px 460px;
-  font-size: 13px;
+  font-size: 0.8rem;
 `;
 
 //컨텐츠 들어갈 박스

@@ -1,4 +1,3 @@
-// 미니홈피 페이지 입니다. 초기상태는 Profile,Main 컴포넌트 상태에서 시작하고 Main컴포넌트에서 다이어리,방명록 링크태그로 걸어주세요
 import styled from "styled-components";
 import Layout from "../components/layout/Layout";
 import Main from "../components/main/Main";
@@ -10,6 +9,7 @@ import { useState, React } from "react";
 function HomeP() {
   // 홈피 컴포넌트 상태관리
   const [content, setContent] = useState("main");
+  console.log(content);
 
   // 버튼의 이름으로 setContent
   const handleClickButton = (e) => {
@@ -32,13 +32,13 @@ function HomeP() {
             <Profile />
             {content && <Content>{selectComponent[content]}</Content>}
             <Menu>
-              <MenuButton onClick={handleClickButton} name="main">
+              <MenuButton className={content === "main" ? "active" : ""} onClick={handleClickButton} name="main">
                 홈
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} onClick={handleClickButton} name="diary">
+              <MenuButton style={{ marginTop: "2px" }} className={content === "diary" ? "active" : ""} onClick={handleClickButton} name="diary">
                 다이어리
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} onClick={handleClickButton} name="guestbook">
+              <MenuButton style={{ marginTop: "2px" }} className={content === "guestbook" ? "active" : ""} onClick={handleClickButton} name="guestbook">
                 방명록
               </MenuButton>
             </Menu>
@@ -101,5 +101,16 @@ const Menu = styled.div`
 const MenuButton = styled.button`
   width: 80px;
   height: 35px;
+  background-color: #aed2dd;
+  border: 1px solid #cdd5d8;
+  border-left: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  font-weight: bold;
+  color: #646592;
   cursor: pointer;
+
+  &.active {
+    background-color: #ffffff;
+  }
 `;
