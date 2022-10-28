@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import styled from "styled-components";
 // import useCookie from "react-cookie";
 
 function Login() {
@@ -38,12 +39,26 @@ function Login() {
       <StSignin>
         <StForm as="form">
           <StLogin>
-            <input label="아이디" variant="outlined" type="text" {...register("username")} />
-            <input label="비밀번호" variant="outlined" type="password" {...register("password")} />
+            <input
+              label="아이디"
+              variant="outlined"
+              type="text"
+              {...register("username")}
+            />
+            <input
+              label="비밀번호"
+              variant="outlined"
+              type="password"
+              {...register("password")}
+            />
           </StLogin>
-          <Button variant="contained" type="submit" onClick={handleSubmit(signin)}>
+          <button
+            variant="contained"
+            type="submit"
+            onClick={handleSubmit(signin)}
+          >
             로그인
-          </Button>
+          </button>
         </StForm>
       </StSignin>
     </Stbox>
