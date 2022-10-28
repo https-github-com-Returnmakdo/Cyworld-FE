@@ -20,6 +20,7 @@ const PageBox = styled.div`
 
 //프로필 박스
 const ProfBox = styled.div`
+  width: 230px;
   flex: 2;
   margin: 0px 15px 15px 15px;
   background-color: white;
@@ -30,7 +31,7 @@ const ProfBox = styled.div`
 //투데이표기
 const Today = styled.div`
   flex: 0.1;
-  margin: 15px 0px 0px 15px;
+  margin: 17px 210px -2px 15px;
   text-align: center;
   font-size: 13px;
 `;

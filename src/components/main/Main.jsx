@@ -4,7 +4,7 @@ import styled from "styled-components";
 function Main() {
   return (
     <PageBox>
-      <Domain>도메인주소</Domain>
+      <Domain>http://cyworld.com/3조</Domain>
       <Content>우측 컴포넌트에 띄워지는 홈 화면</Content>
     </PageBox>
   );
@@ -13,8 +13,12 @@ export default Main;
 
 //흰색박스
 const PageBox = styled.div`
+  width: 630px;
+  height: 602px;
+  margin-left: -21%;
+  margin-top: 2px;
   display: flex;
-  flex: 0.5;
+  position: absolute;
   flex-direction: column;
 `;
 
@@ -22,7 +26,7 @@ const PageBox = styled.div`
 const Domain = styled.div`
   display: flex;
   flex: 0.1;
-  margin: 15px 0px 0px 15px;
+  margin: 15px 0px 0px 460px;
   font-size: 13px;
 `;
 

@@ -2,18 +2,46 @@
 import styled from "styled-components";
 import Layout from "../components/layout/Layout";
 import Main from "../components/main/Main";
+import Diary from "../components/diaries/Diary";
+import Guestbook from "../components/guestbooks/GuestBook";
 import Profile from "../components/profile/Profile";
-import MenuBar from "../components/layout/MenuBar";
+import { useState, React } from "react";
 
 function HomeP() {
+  // 홈피 컴포넌트 상태관리
+  const [content, setContent] = useState();
+
+  // 버튼의 이름으로 setContent
+  const handleClickButton = (e) => {
+    const { name } = e.target;
+    setContent(name);
+  };
+
+  // 선택될 컴포넌트 명단
+  const selectComponent = {
+    main: <Main />,
+    diary: <Diary />,
+    guestbook: <Guestbook />,
+  };
+
   return (
     <Layout>
       <Outline>
         <Dot>
           <Page>
             <Profile />
-            <Main />
-            <MenuBar />
+            {content && <Content>{selectComponent[content]}</Content>}
+            <Menu>
+              <MenuButton onClick={handleClickButton} name="main">
+                홈
+              </MenuButton>
+              <MenuButton style={{ marginTop: "2px" }} onClick={handleClickButton} name="diary">
+                다이어리
+              </MenuButton>
+              <MenuButton style={{ marginTop: "2px" }} onClick={handleClickButton} name="guestbook">
+                방명록
+              </MenuButton>
+            </Menu>
           </Page>
         </Dot>
       </Outline>
@@ -28,10 +56,14 @@ const Outline = styled.div`
   border: 1px solid #738186;
   width: 960px;
   height: 660px;
-  margin: 100px auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   position: relative;
   display: block;
 `;
+
+const Content = styled.div``;
 
 const Dot = styled.div`
   border: 2px dashed white;
@@ -53,4 +85,21 @@ const Page = styled.div`
   right: 10px;
   border-radius: 9px;
   display: flex;
+`;
+
+//메뉴 묶는 박스
+const Menu = styled.div`
+  flex: 0.2;
+  margin-top: 70px;
+  left: 48.6%;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+`;
+
+//메뉴버튼
+const MenuButton = styled.button`
+  width: 80px;
+  height: 35px;
+  cursor: pointer;
 `;
