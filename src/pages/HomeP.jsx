@@ -30,7 +30,7 @@ function HomeP() {
         <Dot>
           <Page>
             <Profile />
-            {content && <Content>{selectComponent[content]}</Content>}
+            {content && <div>{selectComponent[content]}</div>}
             <Menu>
               <MenuButton
                 className={content === "main" ? "active" : ""}
@@ -64,6 +64,7 @@ function HomeP() {
 }
 export default HomeP;
 
+//미니홈피 다이어리 표지
 const Outline = styled.div`
   background-color: #aed2dd;
   border-radius: 9px;
@@ -77,8 +78,7 @@ const Outline = styled.div`
   display: block;
 `;
 
-const Content = styled.div``;
-
+//점선테두리
 const Dot = styled.div`
   border: 2px dashed white;
   border-radius: 9px;
@@ -90,6 +90,7 @@ const Dot = styled.div`
   display: block;
 `;
 
+//회색 박스
 const Page = styled.div`
   background-color: #f0f0f0;
   position: absolute;

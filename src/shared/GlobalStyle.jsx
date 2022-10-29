@@ -68,4 +68,12 @@ a {
 	width: 520px;
 	height: 250px;
 }
+
+.minimi {
+	width: 35px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 `;
