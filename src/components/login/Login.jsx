@@ -100,6 +100,10 @@ const PassBox = styled.div`
     padding: 8px 15px 8px 15px;
     background-color: #ff6500;
     color: white;
+    :hover {
+      background-color: #ff9c59;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -110,6 +114,10 @@ const RandomHome = styled.button`
   background-color: white;
   width: 320px;
   height: 40px;
+  :hover {
+    background-color: #e3e3e3;
+    cursor: pointer;
+  }
 `;
 
 const LogBox = styled.div`
