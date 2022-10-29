@@ -4,7 +4,6 @@ import styled from "styled-components";
 function Main() {
   return (
     <PageBox>
-      <Domain>http://cyworld.com/3조</Domain>
       <Content>
         <Box>
           <Title>미니룸</Title>
@@ -59,10 +58,10 @@ export default Main;
 
 //흰색박스
 const PageBox = styled.div`
-  width: 630px;
-  height: 602px;
-  margin-left: -21%;
-  margin-top: 2px;
+  width: 643px;
+  height: 562px;
+  margin-left: -22%;
+  margin-top: 17px;
   display: flex;
   position: absolute;
   flex-direction: column;

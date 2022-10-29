@@ -12,7 +12,6 @@ import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 function Diary() {
   return (
     <PageBox>
-      <Domain>http://cyworld.com/3조</Domain>
       <Content>
         <DiaryBox>
           {/* DiaryBox 안의 내용은 map으로 보여주기 */}
@@ -158,10 +157,10 @@ export default Diary;
 
 //흰색박스
 const PageBox = styled.div`
-  width: 630px;
-  height: 602px;
-  margin-left: -21%;
-  margin-top: 2px;
+  width: 643px;
+  height: 562px;
+  margin-left: -22%;
+  margin-top: 17px;
   display: flex;
   position: absolute;
   flex-direction: column;

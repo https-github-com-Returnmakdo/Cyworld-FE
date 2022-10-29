@@ -30,7 +30,13 @@ function HomeP() {
         <Dot>
           <Page>
             <Profile />
-            {content && <div>{selectComponent[content]}</div>}
+            <div>
+              <Domain>
+                <UserTitle>안치영님의 미니홈피</UserTitle>
+                <Userdomain>www.cyworld/3조.com</Userdomain>
+              </Domain>
+              {content && <div>{selectComponent[content]}</div>}
+            </div>
             <Menu>
               <MenuButton
                 className={content === "main" ? "active" : ""}
@@ -106,7 +112,7 @@ const Page = styled.div`
 const Menu = styled.div`
   flex: 0.2;
   margin-top: 70px;
-  left: 48.6%;
+  left: 47.4%;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -129,4 +135,26 @@ const MenuButton = styled.button`
     background-color: #ffffff;
     color: #000000;
   }
+`;
+
+//유저정보 정렬
+const Domain = styled.div`
+  margin-top: 10px;
+  padding: 7px;
+`;
+
+//유저도메인
+const Userdomain = styled.div`
+  position: absolute;
+  left: 75%;
+  font-size: 0.9rem;
+`;
+
+//유저홈피
+const UserTitle = styled.div`
+  position: absolute;
+  left: 30%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2b4484;
 `;
