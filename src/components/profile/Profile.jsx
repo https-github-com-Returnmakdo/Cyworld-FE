@@ -16,7 +16,7 @@ function Profile() {
         <History>히스토리</History>
         <Pado>파도타기</Pado>
         <UserName>
-          안치영 <FontAwesomeIcon icon={faMars} />{" "}
+          안치영 <FontAwesomeIcon icon={faMars} />
         </UserName>
         <UserEmail>ahncy12@cyworld.com</UserEmail>
         <Birth>1997.9.30</Birth>
