@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faCheck, faPencil, faTrashCan, faXmark} from "@fortawesome/free-solid-svg-icons"
-import {faSquarePlus} from "@fortawesome/free-regular-svg-icons"
+import {faSquarePlus, faSquareMinus} from "@fortawesome/free-regular-svg-icons"
+import PostModal from "../modal/PostModal";
 
 function Diary() {
+  const [Modal, setModal] = useState(false)
+
+  const openModal = () => {
+    setModal(true);
+  };
+  const closeModal = () => {
+    setModal(false);
+  };
+
   return (
     <PageBox>
       <Domain>http://cyworld.com/3조</Domain>
       <Content>
       <DiaryBox> {/* DiaryBox 안의 내용은 map으로 보여주기 */}
-      <Posting>다이어리를 작성해 볼까요? <FontAwesomeIcon icon={faSquarePlus} style={{verticalAlign: "middle", marginLeft:"10px", scale:"1.6", cursor:"pointer"}} /></Posting>
+      <Posting>다이어리를 작성해 볼까요? 
+        <FontAwesomeIcon 
+        icon={faSquarePlus} 
+        style={{verticalAlign: "middle", marginLeft:"10px", scale:"1.6", cursor:"pointer"}}
+        onClick={openModal}
+        />
+        <PostModal open={Modal} close={closeModal} header="Modal heading"/>
+      </Posting>
         <PostInfo>
           <PostDate>2022-10-29</PostDate>
           <PostNum>No.1</PostNum>
