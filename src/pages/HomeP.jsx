@@ -32,13 +32,27 @@ function HomeP() {
             <Profile />
             {content && <Content>{selectComponent[content]}</Content>}
             <Menu>
-              <MenuButton className={content === "main" ? "active" : ""} onClick={handleClickButton} name="main">
+              <MenuButton
+                className={content === "main" ? "active" : ""}
+                onClick={handleClickButton}
+                name="main"
+              >
                 홈
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} className={content === "diary" ? "active" : ""} onClick={handleClickButton} name="diary">
+              <MenuButton
+                style={{ marginTop: "2px" }}
+                className={content === "diary" ? "active" : ""}
+                onClick={handleClickButton}
+                name="diary"
+              >
                 다이어리
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} className={content === "guestbook" ? "active" : ""} onClick={handleClickButton} name="guestbook">
+              <MenuButton
+                style={{ marginTop: "2px" }}
+                className={content === "guestbook" ? "active" : ""}
+                onClick={handleClickButton}
+                name="guestbook"
+              >
                 방명록
               </MenuButton>
             </Menu>
