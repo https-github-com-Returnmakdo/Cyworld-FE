@@ -14,7 +14,7 @@ function Main() {
           />
           <img alt="미니미" src="/image/minimi1.png" className="minimi" />
           <Illchon>
-            <Title>일촌평</Title>
+            <p>일촌평</p>
             <input type="text" style={{ width: 65 }} placeholder="일촌명" />
             <input
               type="text"
@@ -80,7 +80,7 @@ const Content = styled.div`
 /*제목 주소*/
 const Title = styled.p`
   font-weight: 700;
-  margin: 10px 0px 10px 0px;
+  margin: 5px 0px 10px 0px;
   color: #1ea7cc;
 `;
 
@@ -125,21 +125,13 @@ const IllChonBox = styled.div`
   flex-direction: column;
   color: #6c6c6c;
   overflow: auto;
-  width: 530px;
+  width: 544px;
   height: 100px;
   p {
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   span {
     font-weight: 600;
     color: #1ea7cc;
   }
-`;
-
-//도메인주소
-const Domain = styled.div`
-  display: flex;
-  flex: 0.1;
-  margin: 15px 0px 0px 460px;
-  font-size: 0.8rem;
 `;
