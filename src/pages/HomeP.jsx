@@ -115,16 +115,17 @@ const Menu = styled.div`
 const MenuButton = styled.button`
   width: 80px;
   height: 35px;
-  background-color: #aed2dd;
+  background-color: #238db4;
   border: 1px solid #cdd5d8;
   border-left: none;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  font-weight: bold;
-  color: #646592;
+  color: #ffffff;
+  font-size: 0.8rem;
   cursor: pointer;
 
   &.active {
     background-color: #ffffff;
+    color: #000000;
   }
 `;

@@ -5,7 +5,17 @@ function Main() {
   return (
     <PageBox>
       <Domain>http://cyworld.com/3조</Domain>
-      <Content>우측 컴포넌트에 띄워지는 홈 화면</Content>
+      <Content>
+        <Box>
+          <Title>미니룸</Title>
+          <img
+            alt="미니룸사진"
+            src="/image/miniroom2.gif"
+            className="miniroom"
+          />
+          <Title>일촌평</Title>
+        </Box>
+      </Content>
     </PageBox>
   );
 }
@@ -38,4 +48,14 @@ const Content = styled.div`
   border-radius: 9px;
   border: 1px solid #cdd5d8;
   padding: 3%;
+`;
+
+const Title = styled.p`
+  font-weight: 700;
+  margin: 10px 0px 10px 0px;
+  color: #1ea7cc;
+`;
+
+const Box = styled.div`
+  padding: 20px;
 `;

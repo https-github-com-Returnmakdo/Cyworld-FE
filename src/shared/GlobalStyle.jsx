@@ -59,4 +59,13 @@ a {
 .logopic {
  width: 500px;
 }
+
+.leftBtn {
+	margin-left: 10px;
+}
+
+.miniroom {
+	width: 520px;
+	height: 250px;
+}
 `;

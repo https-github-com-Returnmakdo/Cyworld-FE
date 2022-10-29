@@ -1,14 +1,18 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Login from "../login/Login";
+import SignUp from "../signup/SignUp";
 
 function SignBase({ children }) {
+  const [btn, setBtn] = useState(true);
+
   return (
     <Backbase>
       {children}
       <SetBox>
         <img alt="로그인배경" src="/image/logo.png" className="logopic" />
         <SignBox>
-          <Login />
+          {btn ? <Login setBtn={setBtn} /> : <SignUp setBtn={setBtn} />}
         </SignBox>
       </SetBox>
     </Backbase>
@@ -34,6 +38,7 @@ const SignBox = styled.div`
   border: 1px solid #6d6d6d;
   padding: 15px;
   width: 350px;
+  min-width: 350px;
   height: 550px;
 `;
 
