@@ -5,9 +5,14 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 // import useCookie from "react-cookie";
 
-function Login() {
+function Login({ setBtn }) {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+
+  //버튼 누른 후 상태변화
+  const OnSignBtn = () => {
+    setBtn((x) => !x);
+  };
 
   const signin = (data) => {
     axios
@@ -39,30 +44,29 @@ function Login() {
         <StLogin>
           <p>로그인</p>
           <input
-            label="아이디"
-            variant="outlined"
-            type="text"
-            {...register("username")}
+            type="email"
+            placeholder="example@cyworld.com"
+            autoComplete="on"
+            {...register("email")}
           />
           <PassBox>
             <input
-              label="비밀번호"
-              variant="outlined"
               type="password"
+              placeholder="비밀번호"
+              autoComplete="on"
               {...register("password")}
             />
 
-            <button
-              variant="contained"
-              type="submit"
-              onClick={handleSubmit(signin)}
-            >
+            <button type="submit" onClick={handleSubmit(signin)}>
               로그인
             </button>
           </PassBox>
         </StLogin>
       </form>
-      <button>회원가입</button>
+      <ButtonBox>
+        <button onClick={OnSignBtn}>회원가입</button>
+        <button className="leftBtn">도토리 충전하기</button>
+      </ButtonBox>
       <RandomHome>미니홈피 구경가기 🏠</RandomHome>
     </LogBox>
   );
@@ -107,6 +111,7 @@ const PassBox = styled.div`
   }
 `;
 
+/*미니홈피 랜덤버튼*/
 const RandomHome = styled.button`
   margin-top: 20px;
   border: 1px solid #6d6d6d;
@@ -120,8 +125,14 @@ const RandomHome = styled.button`
   }
 `;
 
+/*전체 컴포넌트 정렬*/
 const LogBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+`;
+
+/*버튼정렬*/
+const ButtonBox = styled.div`
+  display: felx;
 `;

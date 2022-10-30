@@ -6,9 +6,13 @@ import { faMars } from "@fortawesome/free-solid-svg-icons";
 function Profile() {
   return (
     <PageBox>
-      <Today>Today 10 | Total 999</Today>
+      <Today>
+        Today<span style={{ color: "red" }}> 10</span> | Total 999
+      </Today>
       <ProfBox>
-        <DayOfTheWeek>TODAY is Saturday</DayOfTheWeek>
+        <DayOfTheWeek>
+          TODAY is ... <span style={{ color: "black" }}>행복🥰</span>
+        </DayOfTheWeek>
         <RandomImage>
           <ProfileImage src="http://res.heraldm.com/content/image/2021/07/16/20210716000671_0.jpg" />
         </RandomImage>
@@ -28,6 +32,7 @@ export default Profile;
 
 //프로필 담는 박스
 const PageBox = styled.div`
+  width: 100px;
   display: flex;
   flex: 0.5;
   flex-direction: column;
@@ -44,17 +49,20 @@ const ProfBox = styled.div`
 `;
 
 const DayOfTheWeek = styled.div`
-  width: 65%;
-  margin: 10px auto auto auto;
+  width: 85%;
+  margin: 20px auto 15px auto;
   text-align: center;
-  padding: 10px;
-  font-size: 0.75rem;
+  padding: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1ea7cc;
+  border: 1px solid #cdd5d8;
 `;
 
 //투데이표기
 const Today = styled.div`
   flex: 0.1;
-  margin: 17px 210px -2px 15px;
+  margin: 17px 195px -2px 15px;
   text-align: center;
   font-size: 0.8rem;
 `;
@@ -63,14 +71,11 @@ const RandomImage = styled.div`
   width: 85%;
   height: 230px;
   margin: 10px auto auto auto;
-  border: 1px solid #cdd5d8;
-  border-radius: 10px;
 `;
 
 const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
-  border-radius: 10px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -82,8 +87,6 @@ const Intro = styled.div`
   padding: 5px;
   margin: 20px auto auto auto;
   text-align: center;
-  border: 1px solid #cdd5d8;
-  border-radius: 10px;
   font-size: 0.8rem;
 `;
 
@@ -93,6 +96,8 @@ const History = styled.div`
   padding: 5px;
   border-bottom: 1px solid #cdd5d8;
   font-size: 0.8rem;
+  font-weight: 600;
+  color: #1ea7cc;
 `;
 
 const Pado = styled.div`
@@ -110,6 +115,7 @@ const UserName = styled.div`
   margin: 10px auto auto auto;
   padding: 5px;
   font-size: 0.8rem;
+  font-weight: 600;
 `;
 
 const UserEmail = styled.div`

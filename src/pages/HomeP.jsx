@@ -30,7 +30,13 @@ function HomeP() {
         <Dot>
           <Page>
             <Profile />
-            {content && <Content>{selectComponent[content]}</Content>}
+            <div>
+              <Domain>
+                <UserTitle>안치영님의 미니홈피</UserTitle>
+                <Userdomain>www.cyworld/3조.com</Userdomain>
+              </Domain>
+              {content && <div>{selectComponent[content]}</div>}
+            </div>
             <Menu>
               <MenuButton
                 className={content === "main" ? "active" : ""}
@@ -64,6 +70,7 @@ function HomeP() {
 }
 export default HomeP;
 
+//미니홈피 다이어리 표지
 const Outline = styled.div`
   background-color: #aed2dd;
   border-radius: 9px;
@@ -77,8 +84,7 @@ const Outline = styled.div`
   display: block;
 `;
 
-const Content = styled.div``;
-
+//점선테두리
 const Dot = styled.div`
   border: 2px dashed white;
   border-radius: 9px;
@@ -90,6 +96,7 @@ const Dot = styled.div`
   display: block;
 `;
 
+//회색 박스
 const Page = styled.div`
   background-color: #f0f0f0;
   position: absolute;
@@ -105,7 +112,7 @@ const Page = styled.div`
 const Menu = styled.div`
   flex: 0.2;
   margin-top: 70px;
-  left: 48.6%;
+  left: 47.4%;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -115,16 +122,39 @@ const Menu = styled.div`
 const MenuButton = styled.button`
   width: 80px;
   height: 35px;
-  background-color: #aed2dd;
+  background-color: #238db4;
   border: 1px solid #cdd5d8;
   border-left: none;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  font-weight: bold;
-  color: #646592;
+  color: #ffffff;
+  font-size: 0.8rem;
   cursor: pointer;
 
   &.active {
     background-color: #ffffff;
+    color: #000000;
   }
+`;
+
+//유저정보 정렬
+const Domain = styled.div`
+  margin-top: 10px;
+  padding: 7px;
+`;
+
+//유저도메인
+const Userdomain = styled.div`
+  position: absolute;
+  left: 75%;
+  font-size: 0.9rem;
+`;
+
+//유저홈피
+const UserTitle = styled.div`
+  position: absolute;
+  left: 30%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2b4484;
 `;
