@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import Books from "./Books";
+import BookWrite from "./BookWrite";
 
 function GuestBook() {
   return (
     <PageBox>
       <Content>
+        <BookWrite />
         <Books />
         <Books />
         <Books />

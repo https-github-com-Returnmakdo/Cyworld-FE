@@ -13,13 +13,21 @@ function Main() {
             className="miniroom"
           />
           <img alt="미니미" src="/image/minimi1.png" className="minimi" />
-          <Illchon>
+          <Illchon as="form">
             <p>일촌평</p>
-            <input type="text" style={{ width: 65 }} placeholder="일촌명" />
+            <input
+              type="text"
+              style={{ width: 65 }}
+              placeholder="일촌명"
+              maxLength="10"
+              required
+            />
             <input
               type="text"
               placeholder="일촌과 나누고 싶은 이야기를 나눠보세요~!"
               style={{ width: 320 }}
+              maxLength="30"
+              required
             />
             <button>등록</button>
           </Illchon>
@@ -90,7 +98,7 @@ const Box = styled.div`
 `;
 
 /*일촌평 남기기*/
-const Illchon = styled.div`
+const Illchon = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -22,7 +22,11 @@ function Books() {
       </BooksTitle>
       <UserBook>
         <UserPic>
-          <img src="/image/example.gif" alt="방명록미니미" />
+          <img
+            src="/image/example.gif"
+            alt="방명록미니미"
+            className="userMinimi"
+          />
         </UserPic>
         <UserWrite>안녕여여영영여여여여여여</UserWrite>
       </UserBook>
@@ -92,17 +96,20 @@ const BooksButton = styled.div`
   }
 `;
 
+//유저 박스
 const UserBook = styled.div`
   padding: 15px;
   display: flex;
 `;
 
+//유저 미니미
 const UserPic = styled.div`
   /* background-color: blue; */
   width: 100px;
   height: 100px;
 `;
 
+//유저 방명록칸
 const UserWrite = styled.div`
   /* background-color: green; */
   width: 420px;
