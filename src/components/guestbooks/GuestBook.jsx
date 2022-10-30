@@ -1,10 +1,15 @@
-import React from "react";
 import styled from "styled-components";
+import Books from "./Books";
 
 function GuestBook() {
   return (
     <PageBox>
-      <Content>방명록</Content>
+      <Content>
+        <Books />
+        <Books />
+        <Books />
+        <Books />
+      </Content>
     </PageBox>
   );
 }
@@ -30,4 +35,5 @@ const Content = styled.div`
   border-radius: 9px;
   border: 1px solid #cdd5d8;
   padding: 3%;
+  overflow: auto;
 `;
