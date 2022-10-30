@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
 import { useForm } from "react-hook-form";
-import React from "react";
 import axios from "axios";
 
-function SignUp() {
+function SignUp({ setBtn }) {
+  const OnSignBtn = () => {
+    setBtn((x) => !x);
+  };
+
   // 회원가입 데이터 값
   const {
     register,
@@ -18,38 +21,28 @@ function SignUp() {
 
   //회원가입 데이터 전송
   const onSubmit = (data) => {
+    console.log(data);
     axios
-      .post("", data)
+      .post("https://sparta-jyh.shop/api/users/signup", data)
       .then((res) => {
-        if (res.data.message === "SUCCESS") {
-          alert("회원가입에 성공했습니다.");
-          window.location.replace("/");
-        }
+        console.log(res);
+        // if (res.data.message === "SUCCESS") {
+        //   alert("회원가입에 성공했습니다.");
+        //   window.location.replace("/");
+        // }
       })
       .catch((error) => {
-        console.log(error);
-        if (error.code === "ERR_BAD_REQUEST") {
-          alert("중복된 아이디 또는 닉네임입니다. 중복 검사를 진행해주세요.");
-        }
+        // console.log(error);
+        // if (error.code === "ERR_BAD_REQUEST") {
+        //   alert("중복된 아이디 또는 닉네임입니다. 중복 검사를 진행해주세요.");
+        // }
       });
-  };
-
-  //닉네임 중복검사 진행하기
-  const nickDup = () => {
-    const nickname = watch("nickname");
-    axios.post("", { value: nickname }).then((res) => {
-      if (res.data.result === true) {
-        alert("중복된 닉네임 입니다.");
-      } else {
-        alert("사용 가능한 닉네임 입니다.");
-      }
-    });
   };
 
   //아이디 중복검사 진행하기
   const userDup = () => {
-    const username = watch("username");
-    axios.post("", { value: username }).then((res) => {
+    const emial = watch("emial");
+    axios.post("", { value: emial }).then((res) => {
       if (res.data.result === true) {
         alert("중복된 아이디 입니다.");
       } else {
@@ -59,102 +52,168 @@ function SignUp() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        autoFocus
-        margin="dense"
-        label="닉네임"
-        type="text"
-        fullWidth
-        variant="standard"
-        placeholder="8자 이내로 작성해주세요."
-        required
-        error={errors?.nickname}
-        helperText={errors.nickname?.message}
-        {...register("nickname", {
-          maxLength: {
-            value: 8,
-            message: "8글자 이내로 작성해주세요",
-          },
-        })}
-      />
-      <StBtn onClick={nickDup}>닉네임 검사</StBtn>
-      <input
-        autoFocus
-        margin="dense"
-        label="아이디"
-        type="text"
-        fullWidth
-        variant="standard"
-        placeholder="2~10자로 영문을 포함하고 숫자, 특수문자는_만 사용해주세요."
-        required
-        error={errors?.username}
-        helperText={errors.username?.message}
-        {...register("username", {
-          maxLength: {
-            value: 10,
-            message: "10글자 이하로 작성해주세요",
-          },
-          minLength: {
-            value: 4,
-            message: "4글자 이상으로 작성해주세요",
-          },
-          pattern: {
-            value: /^(?=.*[a-zA-Z])[a-zA-Z0-9_]{2,10}$/,
-            message: "형식에 맞지 않는 아이디 입니다.",
-          },
-        })}
-      />
-      <StBtn onClick={userDup}>아이디 검사</StBtn>
-      <input
-        autoFocus
-        margin="dense"
-        label="비밀번호"
-        type="password"
-        fullWidth
-        variant="standard"
-        placeholder="4~20 자리 영문을 포함하고 숫자, 특수문자(!@#$%^&*)만 사용해주세요."
-        required
-        error={errors?.password}
-        helperText={errors.password?.message}
-        {...register("password", {
-          maxLength: {
-            value: 20,
-            message: "20자리 이하로 작성해주세요",
-          },
-          minLength: {
-            value: 4,
-            message: "4자리 이상으로 작성해주세요",
-          },
-          pattern: {
-            value: /^(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{4,20}$/,
-            message: "형식에 맞지 않는 비밀번호 입니다.",
-          },
-        })}
-      />
-      <input
-        autoFocus
-        margin="dense"
-        label="비밀번호 재확인"
-        type="password"
-        fullWidth
-        variant="standard"
-        placeholder="비밀번호를 재입력해주세요."
-        required
-        error={errors?.confirm}
-        helperText={errors.confirm?.message}
-        {...register("confirm", {
-          validate: {
-            confirmPw: (v) => v === password || "비밀번호가 일치하지 않습니다.",
-          },
-        })}
-      />
-      <Button type="submit">가입하기</Button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <StLogin>
+          <p>회원가입</p>
+          <Label>이메일 아이디</Label>
+          <EmailBox>
+            <input
+              type="emial"
+              placeholder="이메일 아이디"
+              required
+              {...register("email", {
+                maxLength: {
+                  value: 10,
+                  message: "10글자 이하로 작성해주세요",
+                },
+                minLength: {
+                  value: 4,
+                  message: "4글자 이상으로 작성해주세요",
+                },
+                pattern: {
+                  value: /^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,10}$/,
+                  message: "형식에 맞지 않는 아이디 입니다.",
+                },
+              })}
+            />
+            <span>@cyworld.com</span>
+            <button className="leftBtn" onClick={userDup}>
+              중복검사
+            </button>
+          </EmailBox>
+          <Check>4~10자 영문을 포함해야하고 숫자 사용이 가능합니다.</Check>
+          <Label>비밀번호</Label>
+          <input
+            type="password"
+            {...register("password", {
+              maxLength: {
+                value: 20,
+                message: "20자리 이하로 작성해주세요",
+              },
+              minLength: {
+                value: 8,
+                message: "4자리 이상으로 작성해주세요",
+              },
+              pattern: {
+                value: /^(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/,
+                message: "형식에 맞지 않는 비밀번호 입니다.",
+              },
+            })}
+            placeholder="비밀번호"
+            required
+          />
+          <Check>
+            8~20자 영문을 포함하고, 숫자, 특수문자(!@#$%^&*)사용 가능합니다.
+          </Check>
+          <Label>비밀번호 재확인</Label>
+          <input
+            type="password"
+            {...register("confirm", {
+              validate: {
+                confirmPw: (v) =>
+                  v === password || "비밀번호가 일치하지 않습니다.",
+              },
+            })}
+            placeholder="비밀번호를 재입력해주세요."
+          />
+          <Check>비밀번호를 재입력해주세요.</Check>
+          <div>
+            <select {...register("gender")} required>
+              <option disabled value="">
+                성별
+              </option>
+              <option value="남자">남자</option>
+              <option value="여자">여자</option>
+            </select>
+            <Label style={{ marginLeft: 10 }}>이름</Label>
+            <input
+              type="text"
+              style={{ marginLeft: 10 }}
+              required
+              {...register("name", {
+                maxLength: {
+                  value: 5,
+                  message: "5자리 이하로 작성해주세요",
+                },
+                pattern: {
+                  value: /[^가-힣a-zA-Z]/,
+                  message: "형식에 맞지 않는 이름 입니다.",
+                },
+              })}
+            />
+          </div>
+          <Check>
+            성별을 선택해주세요. 이름은 한글 또는 영문 1-5자만 가능합니다.
+          </Check>
+          <Label>생년월일</Label>
+          <input
+            type="date"
+            min="1900-01-01"
+            max="2003-12-31"
+            {...register("birth")}
+          />
+          <Check>1900-2003년생만 가입이 가능합니다.</Check>
+        </StLogin>
+        <BtnBox>
+          <button type="submit">가입하기</button>
+          <button onClick={OnSignBtn} className="leftBtn">
+            돌아가기
+          </button>
+        </BtnBox>
+      </form>
+    </>
   );
 }
 export default SignUp;
 
-const StBtn = styled(Button)`
-  width: 100px;
+/*전체 회원가입 박스*/
+const StLogin = styled.div`
+  margin: 30px auto 15px auto;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  p {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #ff6500;
+    margin-bottom: 15px;
+  }
+  input {
+    border: 1px solid #6d6d6d;
+    width: 200px;
+  }
+`;
+
+/*기입 라벨*/
+const Label = styled.label`
+  font-weight: 700;
+`;
+
+/*유효성검사 출력*/
+const Check = styled.span`
+  font-size: 0.7rem;
+  color: #d06400;
+`;
+
+const EmailBox = styled.div`
+  input {
+    width: 120px;
+  }
+`;
+
+const BtnBox = styled.div`
+  display: flex;
+  justify-content: center;
+  button {
+    background-color: #fb751b;
+    padding: 7px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    :hover {
+      background-color: #ff9c59;
+      cursor: pointer;
+    }
+  }
 `;
