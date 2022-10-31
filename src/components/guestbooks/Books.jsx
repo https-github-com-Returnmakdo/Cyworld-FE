@@ -22,11 +22,7 @@ function Books() {
       </BooksTitle>
       <UserBook>
         <UserPic>
-          <img
-            src="/image/example.gif"
-            alt="방명록미니미"
-            className="userMinimi"
-          />
+          <img src="/image/example.gif" alt="방명록미니미" className="userMinimi" />
         </UserPic>
         <UserWrite>안녕여여영영여여여여여여</UserWrite>
       </UserBook>
