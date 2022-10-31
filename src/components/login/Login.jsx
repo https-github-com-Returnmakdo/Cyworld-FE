@@ -6,34 +6,38 @@ import styled from "styled-components";
 // import useCookie from "react-cookie";
 
 function Login({ setBtn }) {
+  //로그인 데이터값
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   //버튼 누른 후 상태변화
-  const OnSignBtn = () => {
+  const onSignBtn = () => {
     setBtn((x) => !x);
   };
 
+  //로그인하기
   const signin = (data) => {
+    const SERVER = process.env.REACT_APP_SERVER;
+    console.log(data);
     axios
-      .post("", data)
+      .post(`${SERVER}/users/login`, data)
       .then((res) => {
         console.log(res);
-        const accessToken = res.data.accessToken.split(" ")[1];
-        const refreshToken = res.data.refreshToken.split(" ")[1];
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken); // setCookie 해야함 !!
-        if (res.data.message === "로그인되었습니다.") {
-          navigate("/HomeP");
-        }
+        // const accessToken = res.data.accessToken.split(" ")[1];
+        // const refreshToken = res.data.refreshToken.split(" ")[1];
+        // localStorage.setItem("accessToken", accessToken);
+        // localStorage.setItem("refreshToken", refreshToken); // setCookie 해야함 !!
+        // if (res.data.message === "로그인되었습니다.") {
+        //   navigate("/HomeP");
+        // }
       })
       .catch((error) => {
         console.log(error);
         if (error.code === "ERR_BAD_REQUEST") {
           Swal.fire({
             icon: "error",
-            title: "다시 확인해주세요!",
-            text: "아이디 또는 비밀번호가 틀렸습니다.",
+            title: "이메일 또는 비밀번호가 틀렸습니다.",
+            text: "가입하신 이메일 아이디 뒤에 @cyworld.com을 붙여주세요.",
           });
         }
       });
@@ -56,7 +60,6 @@ function Login({ setBtn }) {
               autoComplete="on"
               {...register("password")}
             />
-
             <button type="submit" onClick={handleSubmit(signin)}>
               로그인
             </button>
@@ -64,7 +67,7 @@ function Login({ setBtn }) {
         </StLogin>
       </form>
       <ButtonBox>
-        <button onClick={OnSignBtn}>회원가입</button>
+        <button onClick={onSignBtn}>회원가입</button>
         <button className="leftBtn">도토리 충전하기</button>
       </ButtonBox>
       <RandomHome>미니홈피 구경가기 🏠</RandomHome>
