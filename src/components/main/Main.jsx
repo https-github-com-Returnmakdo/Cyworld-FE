@@ -32,30 +32,14 @@ function Main() {
             <button>등록</button>
           </Illchon>
           <IllChonBox>
-            <p>
-              · 일촌평 남겨드려요~! (일촌 <span>정세모</span>)
-            </p>
-            <p>
-              · 일촌평 남기기기기기기기긱 ((づ^.^)づ~♡ <span>김네모</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
+            <IllBox>
+              <p>
+                · 일촌평 남겨드려요~! (일촌 <span>정세모</span>)
+              </p>
+              <BooksButton>
+                <button>삭제</button>
+              </BooksButton>
+            </IllBox>
           </IllChonBox>
         </Box>
       </Content>
@@ -142,4 +126,20 @@ const IllChonBox = styled.div`
     font-weight: 600;
     color: #1ea7cc;
   }
+`;
+
+//수정 삭제 버튼
+const BooksButton = styled.div`
+  margin-right: 20px;
+  button {
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: white;
+  }
+`;
+
+const IllBox = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

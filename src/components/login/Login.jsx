@@ -18,13 +18,12 @@ function Login({ setBtn }) {
   //로그인하기
   const signin = (data) => {
     const SERVER = process.env.REACT_APP_SERVER;
-    console.log(data);
     axios
       .post(`${SERVER}/users/login`, data)
       .then((res) => {
         console.log(res);
-        // const accessToken = res.data.accessToken.split(" ")[1];
-        // const refreshToken = res.data.refreshToken.split(" ")[1];
+        const accessToken = res.data.accessToken;
+        const refreshToken = res.data.refreshToken;
         // localStorage.setItem("accessToken", accessToken);
         // localStorage.setItem("refreshToken", refreshToken); // setCookie 해야함 !!
         // if (res.data.message === "로그인되었습니다.") {
@@ -32,7 +31,6 @@ function Login({ setBtn }) {
         // }
       })
       .catch((error) => {
-        console.log(error);
         if (error.code === "ERR_BAD_REQUEST") {
           Swal.fire({
             icon: "error",

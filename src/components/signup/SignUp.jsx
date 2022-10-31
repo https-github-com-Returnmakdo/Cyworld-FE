@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useState } from "react";
 
 //회원가입 컴포넌트로 변경시키기
 function SignUp({ setBtn }) {
@@ -23,19 +24,28 @@ function SignUp({ setBtn }) {
   //회원가입 데이터 전송
   const onSubmit = (data) => {
     const SERVER = process.env.REACT_APP_SERVER;
-    axios
-      .post(`${SERVER}/users/signup`, data)
-      .then((res) => {
-        if (res.status === 201) {
-          Swal.fire("회원가입에 성공했습니다.");
-          setBtn((x) => !x);
-        }
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          Swal.fire("중복된 아이디입니다. 중복 검사를 진행해주세요.");
-        }
-      });
+    console.log(check);
+    if (check === false) {
+      Swal.fire("중복검사를 진행해주세요!");
+    } else {
+      axios
+        .post(`${SERVER}/users/signup`, data)
+        .then((res) => {
+          if (res.status === 201) {
+            Swal.fire("회원가입에 성공했습니다.");
+            setBtn((x) => !x);
+          }
+        })
+        .catch((error) => {
+          if (error.code === "ERR_BAD_REQUEST") {
+            Swal.fire(
+              "잘못 입력된 양식이 있습니다.",
+              "이름에 비밀번호 값을 넣지마세요.",
+              "warning"
+            );
+          }
+        });
+    }
   };
 
   //아이디 중복검사 진행하기
@@ -47,14 +57,19 @@ function SignUp({ setBtn }) {
       .then((res) => {
         if (res.status === 200) {
           Swal.fire("사용가능한 이메일 아이디 입니다.");
+          setCheck(true);
         }
       })
       .catch((error) => {
         if (error.code === "ERR_BAD_REQUEST") {
           Swal.fire("중복된 이메일 아이디 입니다.");
+          setCheck(false);
         }
       });
   };
+
+  //아이디 중복 체크여부
+  const [check, setCheck] = useState(false);
 
   return (
     <>
@@ -92,6 +107,15 @@ function SignUp({ setBtn }) {
           ) : (
             <Err>{errors?.email?.message}</Err>
           )}
+          <span className="idCheck">
+            중복검사를 진행해주세요 :
+            {check ? (
+              <Check style={{ color: "green" }}> 사용가능</Check>
+            ) : (
+              <Check style={{ color: "red" }}> 사용불가능</Check>
+            )}
+          </span>
+
           <Label>비밀번호</Label>
           <input
             type="password"
@@ -166,7 +190,6 @@ function SignUp({ setBtn }) {
           ) : (
             <Err>{errors?.name?.message}</Err>
           )}
-
           <Label>생년월일</Label>
           <input
             type="date"
@@ -191,7 +214,7 @@ export default SignUp;
 
 /*전체 회원가입 박스*/
 const StLogin = styled.div`
-  margin: 30px auto 15px auto;
+  margin: 15px auto 15px auto;
   display: flex;
   gap: 10px;
   flex-direction: column;
