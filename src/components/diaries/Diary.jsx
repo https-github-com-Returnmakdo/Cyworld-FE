@@ -1,16 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faPencil,
-  faTrashCan,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faSquarePlus,
-  faSquareMinus,
-} from "@fortawesome/free-regular-svg-icons";
+import { faCheck, faPencil, faTrashCan, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus, faSquareMinus } from "@fortawesome/free-regular-svg-icons";
 import PostModal from "../modal/PostModal";
 
 function Diary() {
@@ -27,8 +19,6 @@ function Diary() {
     <PageBox>
       <Content>
         <DiaryBox>
-          {" "}
-          {/* DiaryBox 안의 내용은 map으로 보여주기 */}
           <Posting>
             다이어리를 작성해 볼까요?
             <FontAwesomeIcon
@@ -41,7 +31,7 @@ function Diary() {
               }}
               onClick={openModal}
             />
-            <PostModal open={Modal} close={closeModal} header="Modal heading" />
+            <PostModal open={Modal} close={closeModal} />
           </Posting>
           <PostInfo>
             <PostDate>2022-10-29</PostDate>
@@ -67,10 +57,7 @@ function Diary() {
               <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
             </CommentEdit>
             <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
+              <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
             </CommentDelete>
           </CommentListBox>
           <PostInfo>
@@ -97,10 +84,7 @@ function Diary() {
               <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
             </CommentEdit>
             <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
+              <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
             </CommentDelete>
           </CommentListBox>
           <PostInfo>
@@ -127,10 +111,7 @@ function Diary() {
               <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
             </CommentEdit>
             <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
+              <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
             </CommentDelete>
           </CommentListBox>
           <PostInfo>
@@ -157,10 +138,7 @@ function Diary() {
               <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
             </CommentEdit>
             <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
+              <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
             </CommentDelete>
           </CommentListBox>
         </DiaryBox>
