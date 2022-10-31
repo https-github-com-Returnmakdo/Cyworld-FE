@@ -1,34 +1,37 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-// import useCookie from "react-cookie";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 function Login({ setBtn }) {
+  const SERVER = process.env.REACT_APP_SERVER;
   //로그인 데이터값
   const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
-
   //버튼 누른 후 상태변화
   const onSignBtn = () => {
     setBtn((x) => !x);
   };
 
+  //토큰 저장하기
+  const [accCookies, setAccCookie] = useCookies(["accessToken"]);
+  const [reCookies, setReCookie] = useCookies(["refreshToken"]);
+
   //로그인하기
-  const signin = (data) => {
-    const SERVER = process.env.REACT_APP_SERVER;
+  function signin(data) {
     axios
       .post(`${SERVER}/users/login`, data)
       .then((res) => {
-        console.log(res);
+        const userId = res.data.userId;
         const accessToken = res.data.accessToken;
         const refreshToken = res.data.refreshToken;
-        // localStorage.setItem("accessToken", accessToken);
-        // localStorage.setItem("refreshToken", refreshToken); // setCookie 해야함 !!
-        // if (res.data.message === "로그인되었습니다.") {
-        //   navigate("/HomeP");
-        // }
+        setAccCookie("accessToken", accessToken);
+        setReCookie("refreshToken", refreshToken);
+        if (res.statusText === "OK") {
+          window.open(`http://localhost:3000/HomeP/${userId}`);
+          //https://cyworld-client.vercel.app
+        }
       })
       .catch((error) => {
         if (error.code === "ERR_BAD_REQUEST") {
@@ -39,16 +42,27 @@ function Login({ setBtn }) {
           });
         }
       });
-  };
+  }
+
+  //랜덤 파도타기
+  function surfing() {
+    axios.get(`${SERVER}/users/surfing`).then((res) => {
+      const random = res.data.data;
+      window.open(`http://localhost:3000/HomeP/${random}`);
+      //https://cyworld-client.vercel.app
+    });
+  }
+
   return (
     <LogBox>
-      <form>
+      <form onSubmit={handleSubmit(signin)}>
         <StLogin>
           <p>로그인</p>
           <input
             type="email"
             placeholder="example@cyworld.com"
             autoComplete="on"
+            required
             {...register("email")}
           />
           <PassBox>
@@ -56,11 +70,10 @@ function Login({ setBtn }) {
               type="password"
               placeholder="비밀번호"
               autoComplete="on"
+              required
               {...register("password")}
             />
-            <button type="submit" onClick={handleSubmit(signin)}>
-              로그인
-            </button>
+            <button type="submit">로그인</button>
           </PassBox>
         </StLogin>
       </form>
@@ -68,7 +81,7 @@ function Login({ setBtn }) {
         <button onClick={onSignBtn}>회원가입</button>
         <button className="leftBtn">도토리 충전하기</button>
       </ButtonBox>
-      <RandomHome>미니홈피 구경가기 🏠</RandomHome>
+      <RandomHome onClick={surfing}>미니홈피 구경가기 🏠</RandomHome>
     </LogBox>
   );
 }

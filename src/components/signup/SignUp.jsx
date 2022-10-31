@@ -52,20 +52,24 @@ function SignUp({ setBtn }) {
   const userDup = () => {
     const SERVER = process.env.REACT_APP_SERVER;
     const email = watch("email");
-    axios
-      .post(`${SERVER}/users/emailcheck`, { email: email })
-      .then((res) => {
-        if (res.status === 200) {
-          Swal.fire("사용가능한 이메일 아이디 입니다.");
-          setCheck(true);
-        }
-      })
-      .catch((error) => {
-        if (error.code === "ERR_BAD_REQUEST") {
-          Swal.fire("중복된 이메일 아이디 입니다.");
-          setCheck(false);
-        }
-      });
+    if (email === "") {
+      Swal.fire("값을 먼저 입력해주세요.");
+    } else {
+      axios
+        .post(`${SERVER}/users/emailcheck`, { email: email })
+        .then((res) => {
+          if (res.status === 200) {
+            Swal.fire("사용가능한 이메일 아이디 입니다.");
+            setCheck(true);
+          }
+        })
+        .catch((error) => {
+          if (error.code === "ERR_BAD_REQUEST") {
+            Swal.fire("중복된 이메일 아이디 입니다.");
+            setCheck(false);
+          }
+        });
+    }
   };
 
   //아이디 중복 체크여부

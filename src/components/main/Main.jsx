@@ -1,7 +1,35 @@
 import styled from "styled-components";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 // 우측 컴포넌트에 띄워지는 홈 화면
 function Main() {
+  useEffect(() => {}, []);
+  const { register, handleSubmit } = useForm();
+  const SERVER = process.env.REACT_APP_SERVER;
+
+  //일촌평 작성하기
+  function illChonWrite(data) {
+    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
+      console.log(res);
+    });
+  }
+
+  //일촌평 조회하기
+  function illChonGet(data) {
+    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
+      console.log(res);
+    });
+  }
+
+  //일촌평 삭제하기
+  function illChonDelete(data) {
+    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
+      console.log(res);
+    });
+  }
+
   return (
     <PageBox>
       <Content>
@@ -13,7 +41,7 @@ function Main() {
             className="miniroom"
           />
           <img alt="미니미" src="/image/minimi1.png" className="minimi" />
-          <Illchon as="form">
+          <Illchon as="form" onSubmit={handleSubmit(illChonWrite)}>
             <p>일촌평</p>
             <input
               type="text"
@@ -21,6 +49,7 @@ function Main() {
               placeholder="일촌명"
               maxLength="10"
               required
+              {...register("nick")}
             />
             <input
               type="text"
@@ -28,8 +57,9 @@ function Main() {
               style={{ width: 320 }}
               maxLength="30"
               required
+              {...register("ilchonpyung")}
             />
-            <button>등록</button>
+            <button type="submit">등록</button>
           </Illchon>
           <IllChonBox>
             <IllBox>
@@ -37,7 +67,7 @@ function Main() {
                 · 일촌평 남겨드려요~! (일촌 <span>정세모</span>)
               </p>
               <BooksButton>
-                <button>삭제</button>
+                <button onClick={illChonDelete}>삭제</button>
               </BooksButton>
             </IllBox>
           </IllChonBox>

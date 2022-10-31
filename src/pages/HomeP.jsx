@@ -9,7 +9,6 @@ import { useState, React } from "react";
 function HomeP() {
   // 홈피 컴포넌트 상태관리
   const [content, setContent] = useState("main");
-  console.log(content);
 
   // 버튼의 이름으로 setContent
   const handleClickButton = (e) => {
