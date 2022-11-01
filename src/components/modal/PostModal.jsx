@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import "./PostModal.css";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { __getDiary } from "../../redux/module/diaries";
 
 const PostModal = (props) => {
-  const { open, close } = props;
+  const { open, close, allDiary } = props;
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm();
+  const dispatch = useDispatch();
 
   const [imagePreview, setImagePreview] = useState("");
-  const image = watch("image");
+  const image = watch("dirImg");
   useEffect(() => {
     if (image && image.length > 0) {
       const file = image[0];
@@ -21,7 +25,31 @@ const PostModal = (props) => {
     }
   }, [image]);
 
-  const onSubmit = () => {};
+  const onSubmit = async (data) => {
+    const diaryNo = Number(allDiary.data[0].diaryNo) + 1;
+    const content = data.content;
+    const dirImg = data.dirImg[0];
+    const formData = new FormData();
+    formData.append("dirImg", dirImg);
+    formData.append("content", content);
+    formData.append("diaryNo", diaryNo);
+    await axios({
+      method: "POST",
+      url: "http://3.34.122.31/api/diaries/1",
+      mode: "cors",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: formData,
+    }).then((res) => {
+      if (res.status === 200) {
+        console.log(res);
+      }
+    });
+    alert("작성 완료!");
+    close();
+    dispatch(__getDiary());
+  };
 
   return (
     <div className={open ? "PostModal openModal modal" : "PostModal modal"}>
@@ -34,12 +62,31 @@ const PostModal = (props) => {
           </header>
           <main>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <img src={imagePreview} style={{ maxWidth: "400px", marginRight: "9999px" }} />
-              <UploadLabel for="picture">업로드</UploadLabel>
-              <ImageInput type="file" id="picture" {...register("image")} />
+              <img alt="preview" src={imagePreview} style={{ maxWidth: "400px", marginRight: "9999px" }} />
+              <UploadLabel htmlFor="picture">업로드</UploadLabel>
+              <ImageInput
+                type="file"
+                id="picture"
+                accept="image/*"
+                {...register("dirImg", {
+                  required: "이미지를 올리셔야 합니다!",
+                })}
+              />
               <InputBox>
-                <DiaryInput type="text" placeholder="내용을 입력해주세요." {...register("text")} />
+                <DiaryInput
+                  type="text"
+                  placeholder="내용을 입력해주세요."
+                  {...register("content", {
+                    required: "내용을 입력해주세요!",
+                    maxLength: {
+                      value: 100,
+                      message: "100자 이내로 작성해주세요",
+                    },
+                  })}
+                />
                 <InputButton>작성</InputButton>
+                <p style={{ color: "red", fontSize: "0.8rem", marginTop: "5px" }}>{errors.content?.message}</p>
+                <p style={{ color: "red", fontSize: "0.8rem", marginTop: "5px" }}>{errors.dirImg?.message}</p>
               </InputBox>
             </form>
           </main>
@@ -102,7 +149,9 @@ const InputButton = styled.button`
   width: 54px;
   height: 30px;
   margin-left: 10px;
+  margin-top: 19.5px;
   border-radius: 5px;
+  position: fixed;
   background-color: lightblue;
   vertical-align: middle;
   color: #ffffff;
