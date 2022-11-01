@@ -21,8 +21,8 @@ function Login({ setBtn }) {
       .post(`${SERVER}/users/login`, data)
       .then((res) => {
         const userId = res.data.userId;
-        const accessToken = res.data.accessToken;
-        const refreshToken = res.data.refreshToken;
+        const accessToken = res.data.accesstoken;
+        const refreshToken = res.data.refreshtoken;
         setCookie("accessToken", accessToken);
         setCookie("refreshToken", refreshToken);
         if (res.statusText === "OK") {
