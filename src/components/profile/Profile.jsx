@@ -1,9 +1,26 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faVenus } from "@fortawesome/free-solid-svg-icons"; 여성일땐 이 아이콘 사용 (삼항 연산자로 구분하기)
+import { faVenus } from "@fortawesome/free-solid-svg-icons";
 import { faMars } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function Profile() {
+  useEffect(() => {
+    userHome();
+  }, []);
+
+  const SERVER = process.env.REACT_APP_SERVER;
+  const [user, setUser] = useState();
+  const param = useParams();
+  //홈페이지 미니룸 설정 가져오기
+  function userHome() {
+    axios.get(`${SERVER}/users/myhome/${param.userId}`).then((res) => {
+      setUser(res.data.data);
+    });
+  }
+
   return (
     <PageBox>
       <Today>
@@ -20,10 +37,14 @@ function Profile() {
         <History>히스토리</History>
         <Pado>파도타기</Pado>
         <UserName>
-          안치영 <FontAwesomeIcon icon={faMars} />
+          {user?.name}
+          <FontAwesomeIcon
+            icon={user?.gender === "남자" ? faMars : faVenus}
+            className="leftBtn"
+          />
         </UserName>
-        <UserEmail>ahncy12@cyworld.com</UserEmail>
-        <Birth>1997.9.30</Birth>
+        <UserEmail>{user?.email}</UserEmail>
+        <Birth>{user?.birth}</Birth>
       </ProfBox>
     </PageBox>
   );

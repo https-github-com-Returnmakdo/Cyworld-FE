@@ -19,7 +19,6 @@ export const __userInfo = createAsyncThunk(
 );
 
 /*유저 토큰 보내기*/
-
 export const userSlice = createSlice({
   name: "users",
   initialState,

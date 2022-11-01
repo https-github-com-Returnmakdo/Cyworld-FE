@@ -4,10 +4,26 @@ import Main from "../components/main/Main";
 import Diary from "../components/diaries/Diary";
 import Guestbook from "../components/guestbooks/GuestBook";
 import Profile from "../components/profile/Profile";
-import { useState, React } from "react";
+import { useState, useEffect } from "react";
 import { removeCookie } from "../shared/Cookies";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function HomeP() {
+  useEffect(() => {
+    userHome();
+  }, []);
+
+  const SERVER = process.env.REACT_APP_SERVER;
+  const [user, setUser] = useState();
+  const param = useParams();
+  //홈페이지 미니룸 설정 가져오기
+  function userHome() {
+    axios.get(`${SERVER}/users/myhome/${param.userId}`).then((res) => {
+      setUser(res.data.data);
+    });
+  }
+
   // 홈피 컴포넌트 상태관리
   const [content, setContent] = useState("main");
 
@@ -39,7 +55,7 @@ function HomeP() {
             <Profile />
             <div>
               <Domain>
-                <UserTitle>안치영님의 미니홈피</UserTitle>
+                <UserTitle>{user?.name}님의 미니홈피</UserTitle>
                 <Userdomain>
                   www.cyworld/3조.com
                   <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
@@ -48,20 +64,33 @@ function HomeP() {
               {content && <div>{selectComponent[content]}</div>}
             </div>
             <Menu>
-              <MenuButton className={content === "main" ? "active" : ""} onClick={handleClickButton} name="main">
+              <MenuButton
+                className={content === "main" ? "active" : ""}
+                onClick={handleClickButton}
+                name="main"
+              >
                 홈
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} className={content === "diary" ? "active" : ""} onClick={handleClickButton} name="diary">
+              <MenuButton
+                style={{ marginTop: "2px" }}
+                className={content === "diary" ? "active" : ""}
+                onClick={handleClickButton}
+                name="diary"
+              >
                 다이어리
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} className={content === "guestbook" ? "active" : ""} onClick={handleClickButton} name="guestbook">
+              <MenuButton
+                style={{ marginTop: "2px" }}
+                className={content === "guestbook" ? "active" : ""}
+                onClick={handleClickButton}
+                name="guestbook"
+              >
                 방명록
               </MenuButton>
             </Menu>
           </Page>
         </Dot>
       </Outline>
-      <Bgmbox>ddd</Bgmbox>
     </Layout>
   );
 }
@@ -166,11 +195,11 @@ const LogoutBtn = styled.button`
   color: #2b4484;
 `;
 
-const Bgmbox = styled.div`
-  background-color: #ffffff;
-  position: fixed;
-  width: 300px;
-  height: 100px;
-  margin-left: 80%;
-  margin-top: -40%;
-`;
+// const Bgmbox = styled.div`
+//   background-color: #ffffff;
+//   position: fixed;
+//   width: 300px;
+//   height: 100px;
+//   margin-left: 80%;
+//   margin-top: -40%;
+// `;
