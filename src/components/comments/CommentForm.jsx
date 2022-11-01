@@ -1,0 +1,67 @@
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { __addComment, __getComment } from "../../redux/module/comments";
+
+function CommentForm({ diaryId }) {
+  const [input, setInput] = useState({
+    comment: "",
+  });
+
+  const dispatch = useDispatch();
+
+  const Submit = (e) => {
+    e.preventDefault();
+    if (input.comment.trim() === "") return alert("댓글을 입력해주세요!");
+    dispatch(__addComment({ ...input, diaryId }));
+    alert("작성 완료!");
+    dispatch(__getComment(diaryId));
+  };
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
+  };
+  return (
+    <CommentInputBox>
+      <form onSubmit={Submit}>
+        <Commentinput name="comment" value={input.comment} onChange={onChange} placeholder="댓글을 작성해주세요." />
+        <CommentSave>
+          <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
+        </CommentSave>
+      </form>
+    </CommentInputBox>
+  );
+}
+
+export default CommentForm;
+
+const CommentInputBox = styled.div`
+  width: 95%;
+  height: 30px;
+  margin: 5px auto auto auto;
+  padding: 5px;
+  border: 1px solid #cdd5d8;
+  font-size: 0.8rem;
+`;
+
+const Commentinput = styled.input`
+  width: 90%;
+  height: 20px;
+  border: none;
+  font-size: 0.7rem;
+  vertical-align: middle;
+`;
+
+const CommentSave = styled.button`
+  width: 45px;
+  height: 20px;
+  margin-left: 5px;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7rem;
+`;

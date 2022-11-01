@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import PostModal from "../modal/PostModal";
 import { useDispatch, useSelector } from "react-redux";
 import { __deleteDiary, __getDiary } from "../../redux/module/diaries";
+import CommentForm from "../comments/CommentForm";
+import CommentList from "../comments/CommentList";
 
 function Diary() {
   const [Modal, setModal] = useState(false);
   const { diaries } = useSelector((state) => state.diaries);
+
   const dispatch = useDispatch();
 
   const openModal = () => {
@@ -50,8 +52,8 @@ function Diary() {
             <PostModal open={Modal} close={closeModal} allDiary={diaries} />
           </Posting>
           {diaries.data?.map((diary) => (
-            <div>
-              <PostInfo key={diary.diaryId}>
+            <div key={diary.diaryId}>
+              <PostInfo>
                 <PostDate>{diary.updatedAt.split("T")[0]}</PostDate>
                 <PostNum>No.{diary.diaryNo}</PostNum>
                 <PostEditBox>
@@ -64,21 +66,8 @@ function Diary() {
                 <img alt="postImage" style={{ width: "100%", height: "100%" }} src={diary.dirImg} />
               </DiaryImg>
               <PostContent>{diary.content}</PostContent>
-              <CommentInputBox>
-                <Commentinput placeholder="댓글을 작성해주세요." />
-                <CommentSave>
-                  <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
-                </CommentSave>
-              </CommentInputBox>
-              <CommentListBox>
-                <Comment>댓글</Comment>
-                <CommentEdit>
-                  <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
-                </CommentEdit>
-                <CommentDelete>
-                  <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
-                </CommentDelete>
-              </CommentListBox>
+              <CommentForm diaryId={diary.diaryId} />
+              <CommentList diaryId={diary.diaryId} />
             </div>
           ))}
         </DiaryBox>
@@ -173,102 +162,4 @@ const PostContent = styled.div`
   display: flex;
   border: 1px solid #cdd5d8;
   font-size: 0.8rem;
-`;
-
-const CommentInputBox = styled.div`
-  width: 95%;
-  height: 30px;
-  margin: 5px auto auto auto;
-  padding: 5px;
-  border: 1px solid #cdd5d8;
-  font-size: 0.8rem;
-`;
-
-const Commentinput = styled.input`
-  width: 90%;
-  height: 20px;
-  border: none;
-  font-size: 0.7rem;
-  vertical-align: middle;
-`;
-
-const CommentSave = styled.button`
-  width: 45px;
-  height: 20px;
-  margin-left: 5px;
-  vertical-align: middle;
-  background-color: #ffffff;
-  border: none;
-  cursor: pointer;
-  font-size: 0.7rem;
-`;
-
-const CommentListBox = styled.div`
-  width: 95%;
-  height: 70px;
-  margin: 5px auto auto auto;
-  padding: 5px;
-  display: flex;
-  border: 1px solid #cdd5d8;
-`;
-
-const Comment = styled.div`
-  width: 85%;
-  height: 20px;
-  padding: 2px;
-  border: 1px solid #cdd5d8;
-  font-size: 0.8rem;
-`;
-
-const CommentEdit = styled.button`
-  width: 33px;
-  height: 20px;
-  margin-left: 5px;
-  vertical-align: middle;
-  background-color: #ffffff;
-  border: none;
-  cursor: pointer;
-  font-size: 0.3rem;
-`;
-const CommentDelete = styled.button`
-  width: 33px;
-  height: 20px;
-  margin-left: 5px;
-  vertical-align: middle;
-  background-color: #ffffff;
-  border: none;
-  cursor: pointer;
-  font-size: 0.3rem;
-`;
-
-const UploadLabel = styled.label`
-  width: 70px;
-  height: 30px;
-  display: inline-block;
-  margin: 5px auto auto auto;
-  padding: 9px;
-  text-align: center;
-  vertical-align: middle;
-  border-radius: 5px;
-  background-color: lightblue;
-  color: #ffffff;
-  font-size: 0.8rem;
-  cursor: pointer;
-
-  :hover {
-    background-color: #ffffff;
-    color: #000000;
-    transition: 0.8s;
-  }
-`;
-
-const ImageInput = styled.input`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
 `;
