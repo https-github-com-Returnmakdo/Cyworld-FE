@@ -1,20 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faPencil,
-  faTrashCan,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faSquarePlus,
-  faSquareMinus,
-} from "@fortawesome/free-regular-svg-icons";
+import { faCheck, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import PostModal from "../modal/PostModal";
+import { useDispatch, useSelector } from "react-redux";
+import { __deleteDiary, __getDiary } from "../../redux/module/diaries";
 
 function Diary() {
   const [Modal, setModal] = useState(false);
+  const { diaries } = useSelector((state) => state.diaries);
+  const dispatch = useDispatch();
 
   const openModal = () => {
     setModal(true);
@@ -23,12 +19,22 @@ function Diary() {
     setModal(false);
   };
 
+  const onDelete = (diaryId) => {
+    const result = window.confirm("정말 삭제하시겠습니까? 😢");
+    if (!result) return;
+    dispatch(__deleteDiary(diaryId));
+    alert("삭제 완료!");
+    dispatch(__getDiary());
+  };
+
+  useEffect(() => {
+    dispatch(__getDiary());
+  }, [dispatch]);
+
   return (
     <PageBox>
       <Content>
         <DiaryBox>
-          {" "}
-          {/* DiaryBox 안의 내용은 map으로 보여주기 */}
           <Posting>
             다이어리를 작성해 볼까요?
             <FontAwesomeIcon
@@ -41,128 +47,40 @@ function Diary() {
               }}
               onClick={openModal}
             />
-            <PostModal open={Modal} close={closeModal} header="Modal heading" />
+            <PostModal open={Modal} close={closeModal} allDiary={diaries} />
           </Posting>
-          <PostInfo>
-            <PostDate>2022-10-29</PostDate>
-            <PostNum>No.1</PostNum>
-          </PostInfo>
-          <DiaryImg>
-            <img
-              alt="WindGirl"
-              style={{ width: "100%", height: "100%" }}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSti8jxsmMY-Ttt8TF1pyj6_a8sM7x338Exhw&usqp=CAU"
-            />
-          </DiaryImg>
-          <PostContent>다이어리 글 내용</PostContent>
-          <CommentInputBox>
-            <Commentinput placeholder="댓글을 작성해주세요." />
-            <CommentSave>
-              <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
-            </CommentSave>
-          </CommentInputBox>
-          <CommentListBox>
-            <Comment>댓글</Comment>
-            <CommentEdit>
-              <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
-            </CommentEdit>
-            <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
-            </CommentDelete>
-          </CommentListBox>
-          <PostInfo>
-            <PostDate>2022-10-29</PostDate>
-            <PostNum>No.1</PostNum>
-          </PostInfo>
-          <DiaryImg>
-            <img
-              alt="WindGirl"
-              style={{ width: "100%", height: "100%" }}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSti8jxsmMY-Ttt8TF1pyj6_a8sM7x338Exhw&usqp=CAU"
-            />
-          </DiaryImg>
-          <PostContent>다이어리 글 내용</PostContent>
-          <CommentInputBox>
-            <Commentinput placeholder="댓글을 작성해주세요." />
-            <CommentSave>
-              <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
-            </CommentSave>
-          </CommentInputBox>
-          <CommentListBox>
-            <Comment>댓글</Comment>
-            <CommentEdit>
-              <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
-            </CommentEdit>
-            <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
-            </CommentDelete>
-          </CommentListBox>
-          <PostInfo>
-            <PostDate>2022-10-29</PostDate>
-            <PostNum>No.1</PostNum>
-          </PostInfo>
-          <DiaryImg>
-            <img
-              alt="WindGirl"
-              style={{ width: "100%", height: "100%" }}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSti8jxsmMY-Ttt8TF1pyj6_a8sM7x338Exhw&usqp=CAU"
-            />
-          </DiaryImg>
-          <PostContent>다이어리 글 내용</PostContent>
-          <CommentInputBox>
-            <Commentinput placeholder="댓글을 작성해주세요." />
-            <CommentSave>
-              <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
-            </CommentSave>
-          </CommentInputBox>
-          <CommentListBox>
-            <Comment>댓글</Comment>
-            <CommentEdit>
-              <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
-            </CommentEdit>
-            <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
-            </CommentDelete>
-          </CommentListBox>
-          <PostInfo>
-            <PostDate>2022-10-29</PostDate>
-            <PostNum>No.1</PostNum>
-          </PostInfo>
-          <DiaryImg>
-            <img
-              alt="WindGirl"
-              style={{ width: "100%", height: "100%" }}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSti8jxsmMY-Ttt8TF1pyj6_a8sM7x338Exhw&usqp=CAU"
-            />
-          </DiaryImg>
-          <PostContent>다이어리 글 내용</PostContent>
-          <CommentInputBox>
-            <Commentinput placeholder="댓글을 작성해주세요." />
-            <CommentSave>
-              <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
-            </CommentSave>
-          </CommentInputBox>
-          <CommentListBox>
-            <Comment>댓글</Comment>
-            <CommentEdit>
-              <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
-            </CommentEdit>
-            <CommentDelete>
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginTop: "-1px" }}
-              />
-            </CommentDelete>
-          </CommentListBox>
+          {diaries.data?.map((diary) => (
+            <div>
+              <PostInfo key={diary.diaryId}>
+                <PostDate>{diary.updatedAt.split("T")[0]}</PostDate>
+                <PostNum>No.{diary.diaryNo}</PostNum>
+                <PostEditBox>
+                  <button onClick={() => onDelete(diary.diaryId)} style={{ width: "40px", fontSize: "0.7rem", marginLeft: "5px", cursor: "pointer" }}>
+                    삭제
+                  </button>
+                </PostEditBox>
+              </PostInfo>
+              <DiaryImg>
+                <img alt="postImage" style={{ width: "100%", height: "100%" }} src={diary.dirImg} />
+              </DiaryImg>
+              <PostContent>{diary.content}</PostContent>
+              <CommentInputBox>
+                <Commentinput placeholder="댓글을 작성해주세요." />
+                <CommentSave>
+                  <FontAwesomeIcon icon={faCheck} style={{ marginTop: "-1.5px" }} />
+                </CommentSave>
+              </CommentInputBox>
+              <CommentListBox>
+                <Comment>댓글</Comment>
+                <CommentEdit>
+                  <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
+                </CommentEdit>
+                <CommentDelete>
+                  <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
+                </CommentDelete>
+              </CommentListBox>
+            </div>
+          ))}
         </DiaryBox>
       </Content>
     </PageBox>
@@ -182,14 +100,6 @@ const PageBox = styled.div`
   flex-direction: column;
 `;
 
-//도메인주소
-const Domain = styled.div`
-  display: flex;
-  flex: 0.1;
-  margin: 15px 0px 0px 460px;
-  font-size: 0.8rem;
-`;
-
 //컨텐츠 들어갈 박스
 const Content = styled.div`
   flex: 2;
@@ -204,6 +114,11 @@ const Posting = styled.div`
   width: 95%;
   margin: 10px auto auto auto;
   font-size: 0.9rem;
+`;
+
+const PostEditBox = styled.div`
+  margin-left: 360px;
+  margin-top: -5px;
 `;
 
 const DiaryBox = styled.div`
@@ -324,4 +239,36 @@ const CommentDelete = styled.button`
   border: none;
   cursor: pointer;
   font-size: 0.3rem;
+`;
+
+const UploadLabel = styled.label`
+  width: 70px;
+  height: 30px;
+  display: inline-block;
+  margin: 5px auto auto auto;
+  padding: 9px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 5px;
+  background-color: lightblue;
+  color: #ffffff;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  :hover {
+    background-color: #ffffff;
+    color: #000000;
+    transition: 0.8s;
+  }
+`;
+
+const ImageInput = styled.input`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 `;
