@@ -82,4 +82,8 @@ a {
   width: 100px;
   height: 100px;
 }
+
+.idCheck {
+	font-size: 0.7rem;
+}
 `;

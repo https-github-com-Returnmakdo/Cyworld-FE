@@ -8,7 +8,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Sign />} />
-        <Route path="/HomeP" element={<HomeP />} />
+        <Route path="/HomeP/:userId" element={<HomeP />} />
       </Routes>
     </BrowserRouter>
   );
