@@ -5,6 +5,7 @@ import Diary from "../components/diaries/Diary";
 import Guestbook from "../components/guestbooks/GuestBook";
 import Profile from "../components/profile/Profile";
 import { useState, React } from "react";
+import { removeCookie } from "../shared/Cookies";
 
 function HomeP() {
   // 홈피 컴포넌트 상태관리
@@ -23,6 +24,13 @@ function HomeP() {
     guestbook: <Guestbook />,
   };
 
+  //로그아웃 버튼
+  const logout = () => {
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
+    window.location.replace("/");
+  };
+
   return (
     <Layout>
       <Outline>
@@ -32,7 +40,10 @@ function HomeP() {
             <div>
               <Domain>
                 <UserTitle>안치영님의 미니홈피</UserTitle>
-                <Userdomain>www.cyworld/3조.com</Userdomain>
+                <Userdomain>
+                  www.cyworld/3조.com
+                  <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
+                </Userdomain>
               </Domain>
               {content && <div>{selectComponent[content]}</div>}
             </div>
@@ -64,6 +75,7 @@ function HomeP() {
           </Page>
         </Dot>
       </Outline>
+      <Bgmbox>ddd</Bgmbox>
     </Layout>
   );
 }
@@ -77,7 +89,7 @@ const Outline = styled.div`
   width: 960px;
   height: 660px;
   top: 50%;
-  left: 50%;
+  left: 40%;
   transform: translate(-50%, -50%);
   position: relative;
   display: block;
@@ -145,7 +157,7 @@ const Domain = styled.div`
 //유저도메인
 const Userdomain = styled.div`
   position: absolute;
-  left: 75%;
+  left: 74%;
   font-size: 0.9rem;
 `;
 
@@ -156,4 +168,23 @@ const UserTitle = styled.div`
   font-size: 1rem;
   font-weight: 700;
   color: #2b4484;
+`;
+
+//로그아웃 버튼
+const LogoutBtn = styled.button`
+  font-size: 0.8rem;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  color: #2b4484;
+`;
+
+const Bgmbox = styled.div`
+  background-color: #ffffff;
+  position: fixed;
+  width: 300px;
+  height: 100px;
+  margin-left: 80%;
+  margin-top: -40%;
 `;

@@ -92,7 +92,7 @@ const PageBox = styled.div`
 //컨텐츠 들어갈 박스
 const Content = styled.div`
   flex: 2;
-  margin: 0px 0px 15px 15px;
+  margin: 3px 0px 15px 15px;
   background-color: white;
   border-radius: 9px;
   border: 1px solid #cdd5d8;

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { useCookies } from "react-cookie";
+import { setCookie } from "../../shared/Cookies";
 import { useNavigate } from "react-router-dom";
 
 function Login({ setBtn }) {
@@ -13,10 +13,11 @@ function Login({ setBtn }) {
   const onSignBtn = () => {
     setBtn((x) => !x);
   };
+  const navigate = useNavigate();
 
   //토큰 저장하기
-  const [accCookies, setAccCookie] = useCookies(["accessToken"]);
-  const [reCookies, setReCookie] = useCookies(["refreshToken"]);
+  // const [accCookies, setAccCookie] = useCookies(["accessToken"]);
+  // const [reCookies, setReCookie] = useCookies(["refreshToken"]);
 
   //로그인하기
   function signin(data) {
@@ -26,11 +27,10 @@ function Login({ setBtn }) {
         const userId = res.data.userId;
         const accessToken = res.data.accessToken;
         const refreshToken = res.data.refreshToken;
-        setAccCookie("accessToken", accessToken);
-        setReCookie("refreshToken", refreshToken);
+        setCookie("accessToken", accessToken);
+        setCookie("refreshToken", refreshToken);
         if (res.statusText === "OK") {
-          window.open(`http://localhost:3000/HomeP/${userId}`);
-          //https://cyworld-client.vercel.app
+          navigate(`/HomeP/${userId}`);
         }
       })
       .catch((error) => {
