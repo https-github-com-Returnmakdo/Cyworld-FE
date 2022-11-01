@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheck,
+  faPencil,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import PostModal from "../modal/PostModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,13 +62,25 @@ function Diary() {
                 <PostDate>{diary.updatedAt.split("T")[0]}</PostDate>
                 <PostNum>No.{diary.diaryNo}</PostNum>
                 <PostEditBox>
-                  <button onClick={() => onDelete(diary.diaryId)} style={{ width: "40px", fontSize: "0.7rem", marginLeft: "5px", cursor: "pointer" }}>
+                  <button
+                    onClick={() => onDelete(diary.diaryId)}
+                    style={{
+                      width: "40px",
+                      fontSize: "0.7rem",
+                      marginLeft: "5px",
+                      cursor: "pointer",
+                    }}
+                  >
                     삭제
                   </button>
                 </PostEditBox>
               </PostInfo>
               <DiaryImg>
-                <img alt="postImage" style={{ width: "100%", height: "100%" }} src={diary.dirImg} />
+                <img
+                  alt="postImage"
+                  style={{ width: "100%", height: "100%" }}
+                  src={diary.dirImg}
+                />
               </DiaryImg>
               <PostContent>{diary.content}</PostContent>
               <CommentForm diaryId={diary.diaryId} />

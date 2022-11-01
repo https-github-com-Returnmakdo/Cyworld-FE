@@ -15,10 +15,6 @@ function Login({ setBtn }) {
   };
   const navigate = useNavigate();
 
-  //토큰 저장하기
-  // const [accCookies, setAccCookie] = useCookies(["accessToken"]);
-  // const [reCookies, setReCookie] = useCookies(["refreshToken"]);
-
   //로그인하기
   function signin(data) {
     axios
@@ -46,8 +42,9 @@ function Login({ setBtn }) {
 
   //랜덤 파도타기
   function surfing() {
+    let random = "";
     axios.get(`${SERVER}/users/surfing`).then((res) => {
-      const random = res.data.data;
+      random = res.data.data;
       window.open(`http://localhost:3000/HomeP/${random}`);
       //https://cyworld-client.vercel.app
     });

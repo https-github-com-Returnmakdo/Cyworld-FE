@@ -1,33 +1,86 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getCookie } from "../../shared/Cookies";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
-// 우측 컴포넌트에 띄워지는 홈 화면
 function Main() {
-  useEffect(() => {}, []);
+  // 유저 정보 가져오기
+  useEffect(() => {
+    userHome();
+    illChonGet();
+  }, []);
+
   const { register, handleSubmit } = useForm();
   const SERVER = process.env.REACT_APP_SERVER;
+  const param = useParams();
+  const [gender, setGender] = useState();
+  const [chon, setChon] = useState();
 
-  //일촌평 작성하기
-  function illChonWrite(data) {
-    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
-      console.log(res);
+  //홈페이지 미니룸 설정 가져오기
+  function userHome() {
+    axios.get(`${SERVER}/users/myhome/${param.userId}`).then((res) => {
+      setGender(res.data.data.gender);
     });
   }
 
+  //일촌평 작성하기
+  function illChonWrite(data) {
+    const accessToken = getCookie("accessToken");
+    const refreshToken = getCookie("refreshToken");
+    axios
+      .post(`${SERVER}/bests/${param.userId}`, data, {
+        headers: {
+          accessToken,
+          refreshToken,
+        },
+      })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: `${res.data.msg}`,
+        });
+      })
+      .catch((e) => {
+        Swal.fire({
+          icon: "error",
+          title: `${e.response.data.msg}`,
+        });
+      });
+  }
+
   //일촌평 조회하기
-  function illChonGet(data) {
-    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
-      console.log(res);
+  function illChonGet() {
+    axios.get(`${SERVER}/bests/${param.userId}`).then((res) => {
+      setChon(res.data.data);
     });
   }
 
   //일촌평 삭제하기
-  function illChonDelete(data) {
-    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
-      console.log(res);
-    });
+  function illChonDelete(e) {
+    const accessToken = getCookie("accessToken");
+    const refreshToken = getCookie("refreshToken");
+    axios
+      .delete(`${SERVER}/bests/${e}/${param.userId}`, {
+        headers: {
+          accessToken,
+          refreshToken,
+        },
+      })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: `${res.data.msg}`,
+        });
+      })
+      .catch((e) => {
+        Swal.fire({
+          icon: "error",
+          title: `${e.response.data.msg}`,
+        });
+      });
   }
 
   return (
@@ -37,10 +90,20 @@ function Main() {
           <Title>미니룸</Title>
           <img
             alt="미니룸사진"
-            src="/image/miniroom1.gif"
+            src={
+              gender === "남자"
+                ? "/image/miniroom1.gif"
+                : "/image/miniroom2.gif"
+            }
             className="miniroom"
           />
-          <img alt="미니미" src="/image/minimi1.png" className="minimi" />
+          <img
+            alt="미니미"
+            src={
+              gender === "남자" ? "/image/minimi1.png" : "/image/minimi2.png"
+            }
+            className="minimi"
+          />
           <Illchon as="form" onSubmit={handleSubmit(illChonWrite)}>
             <p>일촌평</p>
             <input
@@ -62,14 +125,20 @@ function Main() {
             <button type="submit">등록</button>
           </Illchon>
           <IllChonBox>
-            <IllBox>
-              <p>
-                · 일촌평 남겨드려요~! (일촌 <span>정세모</span>)
-              </p>
-              <BooksButton>
-                <button onClick={illChonDelete}>삭제</button>
-              </BooksButton>
-            </IllBox>
+            {chon?.map((item) => {
+              return (
+                <IllBox key={item.ilchonpyungId}>
+                  <p>
+                    · {item.ilchonpyung} ({item.nick} <span>{item.name}</span>)
+                  </p>
+                  <BooksButton>
+                    <button onClick={() => illChonDelete(item.ilchonpyungId)}>
+                      삭제
+                    </button>
+                  </BooksButton>
+                </IllBox>
+              );
+            })}
           </IllChonBox>
         </Box>
       </Content>

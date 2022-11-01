@@ -1,4 +1,5 @@
 import { Cookies } from "react-cookie";
+import { decodeToken } from "react-jwt";
 
 const cookies = new Cookies();
 
@@ -15,4 +16,8 @@ export const getCookie = (name) => {
 //쿠키를 지운다
 export const removeCookie = (name) => {
   return cookies.remove(name);
+};
+
+export const decodeCookie = (name) => {
+  return decodeToken(getCookie(name));
 };
