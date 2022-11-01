@@ -1,7 +1,35 @@
 import styled from "styled-components";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 // 우측 컴포넌트에 띄워지는 홈 화면
 function Main() {
+  useEffect(() => {}, []);
+  const { register, handleSubmit } = useForm();
+  const SERVER = process.env.REACT_APP_SERVER;
+
+  //일촌평 작성하기
+  function illChonWrite(data) {
+    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
+      console.log(res);
+    });
+  }
+
+  //일촌평 조회하기
+  function illChonGet(data) {
+    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
+      console.log(res);
+    });
+  }
+
+  //일촌평 삭제하기
+  function illChonDelete(data) {
+    axios.post(`${SERVER}/bests/:userId`, data).then((res) => {
+      console.log(res);
+    });
+  }
+
   return (
     <PageBox>
       <Content>
@@ -13,7 +41,7 @@ function Main() {
             className="miniroom"
           />
           <img alt="미니미" src="/image/minimi1.png" className="minimi" />
-          <Illchon as="form">
+          <Illchon as="form" onSubmit={handleSubmit(illChonWrite)}>
             <p>일촌평</p>
             <input
               type="text"
@@ -21,6 +49,7 @@ function Main() {
               placeholder="일촌명"
               maxLength="10"
               required
+              {...register("nick")}
             />
             <input
               type="text"
@@ -28,34 +57,19 @@ function Main() {
               style={{ width: 320 }}
               maxLength="30"
               required
+              {...register("ilchonpyung")}
             />
-            <button>등록</button>
+            <button type="submit">등록</button>
           </Illchon>
           <IllChonBox>
-            <p>
-              · 일촌평 남겨드려요~! (일촌 <span>정세모</span>)
-            </p>
-            <p>
-              · 일촌평 남기기기기기기기긱 ((づ^.^)づ~♡ <span>김네모</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
-            <p>
-              · 안녕하세요. (친구 <span>박동글</span>)
-            </p>
+            <IllBox>
+              <p>
+                · 일촌평 남겨드려요~! (일촌 <span>정세모</span>)
+              </p>
+              <BooksButton>
+                <button onClick={illChonDelete}>삭제</button>
+              </BooksButton>
+            </IllBox>
           </IllChonBox>
         </Box>
       </Content>
@@ -78,7 +92,7 @@ const PageBox = styled.div`
 //컨텐츠 들어갈 박스
 const Content = styled.div`
   flex: 2;
-  margin: 0px 0px 15px 15px;
+  margin: 3px 0px 15px 15px;
   background-color: white;
   border-radius: 9px;
   border: 1px solid #cdd5d8;
@@ -142,4 +156,20 @@ const IllChonBox = styled.div`
     font-weight: 600;
     color: #1ea7cc;
   }
+`;
+
+//수정 삭제 버튼
+const BooksButton = styled.div`
+  margin-right: 20px;
+  button {
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: white;
+  }
+`;
+
+const IllBox = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

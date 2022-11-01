@@ -1,10 +1,12 @@
 import styled from "styled-components";
-
+import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useState } from "react";
 
+//회원가입 컴포넌트로 변경시키기
 function SignUp({ setBtn }) {
-  const OnSignBtn = () => {
+  const onSignBtn = () => {
     setBtn((x) => !x);
   };
 
@@ -21,35 +23,57 @@ function SignUp({ setBtn }) {
 
   //회원가입 데이터 전송
   const onSubmit = (data) => {
-    console.log(data);
-    axios
-      .post("https://sparta-jyh.shop/api/users/signup", data)
-      .then((res) => {
-        console.log(res);
-        // if (res.data.message === "SUCCESS") {
-        //   alert("회원가입에 성공했습니다.");
-        //   window.location.replace("/");
-        // }
-      })
-      .catch((error) => {
-        // console.log(error);
-        // if (error.code === "ERR_BAD_REQUEST") {
-        //   alert("중복된 아이디 또는 닉네임입니다. 중복 검사를 진행해주세요.");
-        // }
-      });
+    const SERVER = process.env.REACT_APP_SERVER;
+    console.log(check);
+    if (check === false) {
+      Swal.fire("중복검사를 진행해주세요!");
+    } else {
+      axios
+        .post(`${SERVER}/users/signup`, data)
+        .then((res) => {
+          if (res.status === 201) {
+            Swal.fire("회원가입에 성공했습니다.");
+            setBtn((x) => !x);
+          }
+        })
+        .catch((error) => {
+          if (error.code === "ERR_BAD_REQUEST") {
+            Swal.fire(
+              "잘못 입력된 양식이 있습니다.",
+              "이름에 비밀번호 값을 넣지마세요.",
+              "warning"
+            );
+          }
+        });
+    }
   };
 
   //아이디 중복검사 진행하기
   const userDup = () => {
-    const emial = watch("emial");
-    axios.post("", { value: emial }).then((res) => {
-      if (res.data.result === true) {
-        alert("중복된 아이디 입니다.");
-      } else {
-        alert("사용 가능한 아이디 입니다.");
-      }
-    });
+    const SERVER = process.env.REACT_APP_SERVER;
+    const email = watch("email");
+    if (email === "") {
+      Swal.fire("값을 먼저 입력해주세요.");
+    } else {
+      axios
+        .post(`${SERVER}/users/emailcheck`, { email: email })
+        .then((res) => {
+          if (res.status === 200) {
+            Swal.fire("사용가능한 이메일 아이디 입니다.");
+            setCheck(true);
+          }
+        })
+        .catch((error) => {
+          if (error.code === "ERR_BAD_REQUEST") {
+            Swal.fire("중복된 이메일 아이디 입니다.");
+            setCheck(false);
+          }
+        });
+    }
   };
+
+  //아이디 중복 체크여부
+  const [check, setCheck] = useState(false);
 
   return (
     <>
@@ -73,16 +97,29 @@ function SignUp({ setBtn }) {
                 },
                 pattern: {
                   value: /^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,10}$/,
-                  message: "형식에 맞지 않는 아이디 입니다.",
+                  message: "형식에 맞지 않는 이메일 입니다.",
                 },
               })}
             />
             <span>@cyworld.com</span>
-            <button className="leftBtn" onClick={userDup}>
+            <button className="leftBtn" onClick={userDup} type="button">
               중복검사
             </button>
           </EmailBox>
-          <Check>4~10자 영문을 포함해야하고 숫자 사용이 가능합니다.</Check>
+          {errors?.email?.message === undefined ? (
+            <Check>4~10자 영문을 포함해야하고 숫자 사용이 가능합니다.</Check>
+          ) : (
+            <Err>{errors?.email?.message}</Err>
+          )}
+          <span className="idCheck">
+            중복검사를 진행해주세요 :
+            {check ? (
+              <Check style={{ color: "green" }}> 사용가능</Check>
+            ) : (
+              <Check style={{ color: "red" }}> 사용불가능</Check>
+            )}
+          </span>
+
           <Label>비밀번호</Label>
           <input
             type="password"
@@ -93,7 +130,7 @@ function SignUp({ setBtn }) {
               },
               minLength: {
                 value: 8,
-                message: "4자리 이상으로 작성해주세요",
+                message: "8자리 이상으로 작성해주세요",
               },
               pattern: {
                 value: /^(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/,
@@ -103,9 +140,13 @@ function SignUp({ setBtn }) {
             placeholder="비밀번호"
             required
           />
-          <Check>
-            8~20자 영문을 포함하고, 숫자, 특수문자(!@#$%^&*)사용 가능합니다.
-          </Check>
+          {errors?.password?.message === undefined ? (
+            <Check>
+              8~20자 영문을 포함하고, 숫자, 특수문자(!@#$%^&*)사용 가능합니다.
+            </Check>
+          ) : (
+            <Err>{errors?.password?.message}</Err>
+          )}
           <Label>비밀번호 재확인</Label>
           <input
             type="password"
@@ -116,13 +157,16 @@ function SignUp({ setBtn }) {
               },
             })}
             placeholder="비밀번호를 재입력해주세요."
+            required
           />
-          <Check>비밀번호를 재입력해주세요.</Check>
+          {errors?.confirm?.message === undefined ? (
+            <Check>비밀번호를 재입력해주세요.</Check>
+          ) : (
+            <Err>{errors?.confirm?.message}</Err>
+          )}
           <div>
             <select {...register("gender")} required>
-              <option disabled value="">
-                성별
-              </option>
+              <option value="">성별</option>
               <option value="남자">남자</option>
               <option value="여자">여자</option>
             </select>
@@ -137,27 +181,32 @@ function SignUp({ setBtn }) {
                   message: "5자리 이하로 작성해주세요",
                 },
                 pattern: {
-                  value: /[^가-힣a-zA-Z]/,
+                  value: /^[가-힣a-zA-Z]+$/,
                   message: "형식에 맞지 않는 이름 입니다.",
                 },
               })}
             />
           </div>
-          <Check>
-            성별을 선택해주세요. 이름은 한글 또는 영문 1-5자만 가능합니다.
-          </Check>
+          {errors?.name?.message === undefined ? (
+            <Check>
+              성별을 선택해주세요. 이름은 한글 또는 영문 1-5자만 가능합니다.
+            </Check>
+          ) : (
+            <Err>{errors?.name?.message}</Err>
+          )}
           <Label>생년월일</Label>
           <input
             type="date"
             min="1900-01-01"
             max="2003-12-31"
+            required
             {...register("birth")}
           />
           <Check>1900-2003년생만 가입이 가능합니다.</Check>
         </StLogin>
         <BtnBox>
           <button type="submit">가입하기</button>
-          <button onClick={OnSignBtn} className="leftBtn">
+          <button onClick={onSignBtn} className="leftBtn">
             돌아가기
           </button>
         </BtnBox>
@@ -169,7 +218,7 @@ export default SignUp;
 
 /*전체 회원가입 박스*/
 const StLogin = styled.div`
-  margin: 30px auto 15px auto;
+  margin: 15px auto 15px auto;
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -194,6 +243,12 @@ const Label = styled.label`
 const Check = styled.span`
   font-size: 0.7rem;
   color: #d06400;
+`;
+
+/*유효성 검사 오류*/
+const Err = styled.span`
+  font-size: 0.7rem;
+  color: #ff0a0a;
 `;
 
 const EmailBox = styled.div`
