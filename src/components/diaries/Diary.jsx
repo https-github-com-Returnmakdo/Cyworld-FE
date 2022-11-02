@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 function Diary() {
   const [Modal, setModal] = useState(false);
   const { diaries } = useSelector((state) => state.diaries);
-  console.log("dir", diaries);
 
   const dispatch = useDispatch();
   const param = Number(useParams().userId);

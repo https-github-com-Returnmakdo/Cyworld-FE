@@ -89,10 +89,10 @@ function HomeP() {
           </Page>
         </Dot>
       </Outline>
-      <div className="cincopa_responsive_iframe" style={{ top: "-52%", marginLeft: "60px", padding: "56.25% 0 0 0", position: "relative" }}>
+      <div className="cincopa_responsive_iframe" style={{ marginLeft: "23px", padding: "56.25% 0 0 0", position: "relative" }}>
         <div className="cincopa_responsive_wrapper" style={{ height: "100%", left: "0", position: "absolute", top: "0", width: "100%" }}>
           <iframe
-            width="22%"
+            width="23%"
             height="100%"
             src="https://rt.cincopa.com/iframe.aspx?fid=AEFAQ6-DR_-Q"
             frameborder="0"
@@ -106,6 +106,7 @@ function HomeP() {
             <span>izi-응급실</span>
             <span>에픽하이 -love love love</span>
             <span>mc몽 - 서커스</span>
+            <span>긱스-어때</span>
           </noscript>
         </div>
       </div>
