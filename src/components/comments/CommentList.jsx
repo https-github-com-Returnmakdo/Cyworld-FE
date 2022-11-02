@@ -13,7 +13,6 @@ function CommentList({ diaryId }) {
     comment: "",
   });
   const { comments } = useSelector((state) => state.comments);
-  console.log("com", comments);
   const dispatch = useDispatch();
   const param = Number(useParams().userId);
 
