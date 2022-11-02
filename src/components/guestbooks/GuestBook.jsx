@@ -18,10 +18,10 @@ function GuestBook() {
 
   //방명록 가져오기
   function getBook() {
-    console.log(myeng);
     axios
       .get(`${SERVER}/guestbooks/${param.userId}`)
       .then((res) => {
+        console.log(res);
         setMyeng(res.data.data);
       })
       .catch((e) => {
@@ -64,7 +64,7 @@ function GuestBook() {
   return (
     <PageBox>
       <Content>
-        <BookWrite getBook={getBook} myeng={myeng} />
+        <BookWrite getBook={getBook} />
         {myeng?.map((item) => {
           return (
             <BooksBox key={item.guestBookId}>
@@ -75,9 +75,19 @@ function GuestBook() {
                   </BooksNum>
                   <BooksUser> {item.name}</BooksUser>
                   <UserHome>
-                    <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon
+                      icon={faHouse}
+                      onClick={() => {
+                        window.open(
+                          `http://localhost:3000/HomeP/${item.writerId}`
+                        );
+                      }}
+                    />
                   </UserHome>
-                  <BooksDate>({item.createdAt})</BooksDate>
+                  <BooksDate>
+                    ({item.createdAt.split("T")[0]}{" "}
+                    {item.createdAt.split("T")[1].split(".")[0]})
+                  </BooksDate>
                 </div>
                 <BooksButton>
                   <button
@@ -92,7 +102,7 @@ function GuestBook() {
               <UserBook>
                 <UserPic>
                   <img
-                    src="/image/example.gif"
+                    src={item.bookImage}
                     alt="방명록미니미"
                     className="userMinimi"
                   />

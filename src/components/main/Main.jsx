@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function Main() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const SERVER = process.env.REACT_APP_SERVER;
   const param = useParams();
 
@@ -50,6 +50,7 @@ function Main() {
         });
       });
     illChonGet();
+    reset();
   }
 
   //일촌평 삭제하기

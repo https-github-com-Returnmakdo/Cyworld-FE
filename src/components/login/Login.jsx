@@ -42,9 +42,8 @@ function Login({ setBtn }) {
 
   //랜덤 파도타기
   function surfing() {
-    let random = "";
     axios.get(`${SERVER}/users/surfing`).then((res) => {
-      random = res.data.data;
+      const random = res.data.data;
       window.open(`http://localhost:3000/HomeP/${random}`);
       //https://cyworld-client.vercel.app
     });
@@ -55,9 +54,21 @@ function Login({ setBtn }) {
       <form onSubmit={handleSubmit(signin)}>
         <StLogin>
           <p>로그인</p>
-          <input type="email" placeholder="example@cyworld.com" autoComplete="on" required {...register("email")} />
+          <input
+            type="email"
+            placeholder="example@cyworld.com"
+            autoComplete="on"
+            required
+            {...register("email")}
+          />
           <PassBox>
-            <input type="password" placeholder="비밀번호" autoComplete="on" required {...register("password")} />
+            <input
+              type="password"
+              placeholder="비밀번호"
+              autoComplete="on"
+              required
+              {...register("password")}
+            />
             <button type="submit">로그인</button>
           </PassBox>
         </StLogin>

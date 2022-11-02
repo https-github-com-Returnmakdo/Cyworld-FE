@@ -4,21 +4,20 @@ import { useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookies";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
-function BookWrite({ getBook, myeng }) {
-  const { register, handleSubmit, watch } = useForm();
+function BookWrite({ getBook }) {
+  const { register, handleSubmit, watch, reset } = useForm();
   const SERVER = process.env.REACT_APP_SERVER;
   const param = useParams();
   const num = Math.ceil(Math.random() * 9) + "";
+  const [bookImage, setBookImage] = useState();
 
   async function bookGo() {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
     const guestbook = watch("guestbook");
-    const guestBookId = myeng.length + 1;
-    console.log(guestBookId);
-    console.log(guestbook);
-    const data = { guestbook, guestBookId };
+    const data = { guestbook, bookImage };
     await axios
       .post(`${SERVER}/guestbooks/${param.userId}`, data, {
         headers: {
@@ -40,7 +39,18 @@ function BookWrite({ getBook, myeng }) {
         });
       });
     getBook();
+    reset();
   }
+
+  //사진 랜덤
+  const random = () => {
+    setBookImage(
+      `https://qportminiprojectmini.s3.ap-northeast-2.amazonaws.com/sample/${num}.gif`
+    );
+  };
+  useEffect(() => {
+    random();
+  }, []);
 
   return (
     <BooksBox as="form" onSubmit={handleSubmit(bookGo)}>
@@ -48,7 +58,7 @@ function BookWrite({ getBook, myeng }) {
         <UserBook>
           <UserPic>
             <img
-              src={`https://qportminiprojectmini.s3.ap-northeast-2.amazonaws.com/sample/${num}.gif`}
+              src={bookImage}
               alt="방명록미니미"
               type="text"
               className="userMinimi"
@@ -59,13 +69,12 @@ function BookWrite({ getBook, myeng }) {
             rows="5"
             maxLength="100"
             required
-            id="bookin"
             {...register("guestbook")}
           />
         </UserBook>
       </BooksBase>
       <ButtonBox>
-        <button type="submit">완료</button>
+        <button>완료</button>
       </ButtonBox>
     </BooksBox>
   );
