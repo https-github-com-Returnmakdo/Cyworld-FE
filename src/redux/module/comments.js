@@ -15,7 +15,7 @@ const headers = {
 export const __addComment = createAsyncThunk("comments/addComment", async (payload, thunkApi) => {
   try {
     const { data } = await axios.post(`${SERVER}/diaries/comments/${payload.diaryId}/${payload.param}`, payload, { headers });
-    return thunkApi.fulfillWithValue(data);
+    return thunkApi.fulfillWithValue(data.data);
   } catch (e) {
     return thunkApi.rejectWithValue(e);
   }
@@ -24,8 +24,8 @@ export const __addComment = createAsyncThunk("comments/addComment", async (paylo
 // 댓글 불러오기
 export const __getComment = createAsyncThunk("comments/getComment", async (payload, thunkApi) => {
   try {
-    const { data } = await axios.get(`${SERVER}/diaries/comments/${payload.param}`, { headers });
-    return thunkApi.fulfillWithValue(data);
+    const { data } = await axios.get(`${SERVER}/diaries/comments/${payload}`, { headers });
+    return thunkApi.fulfillWithValue(data.data);
   } catch (e) {
     return thunkApi.rejectWithValue(e);
   }
@@ -67,7 +67,7 @@ export const commentsSlice = createSlice({
     },
     [__addComment.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.comments = action.payload.data;
+      state.comments.push(action.payload);
     },
     [__addComment.rejected]: (state, action) => {
       state.isLoading = false;
@@ -89,7 +89,7 @@ export const commentsSlice = createSlice({
     },
     [__deleteComment.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.comments = state.comments.data.filter((comment) => comment.diaryId !== action.payload);
+      state.comments = state.comments.filter((comment) => comment.diaryId !== action.payload);
     },
     [__deleteComment.rejected]: (state, action) => {
       state.isLoading = false;
@@ -97,7 +97,7 @@ export const commentsSlice = createSlice({
     },
     [__editSave.fulfilled]: (state, action) => {
       state.isLoading = false;
-      const idx = state.comments.data.findIndex((comment) => comment.diaryId === action.payload);
+      const idx = state.comments.findIndex((comment) => comment.diaryId === action.payload);
       state.comments[idx] = action.payload;
     },
   },

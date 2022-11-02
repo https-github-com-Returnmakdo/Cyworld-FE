@@ -18,7 +18,6 @@ function GuestBook() {
 
   //방명록 가져오기
   function getBook() {
-    console.log(myeng);
     axios
       .get(`${SERVER}/guestbooks/${param.userId}`)
       .then((res) => {
@@ -91,11 +90,7 @@ function GuestBook() {
               </BooksTitle>
               <UserBook>
                 <UserPic>
-                  <img
-                    src="/image/example.gif"
-                    alt="방명록미니미"
-                    className="userMinimi"
-                  />
+                  <img src="/image/example.gif" alt="방명록미니미" className="userMinimi" />
                 </UserPic>
                 <UserWrite>{item.guestBook}</UserWrite>
               </UserBook>

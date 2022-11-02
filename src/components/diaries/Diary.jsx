@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 function Diary() {
   const [Modal, setModal] = useState(false);
   const { diaries } = useSelector((state) => state.diaries);
+  console.log("dir", diaries);
 
   const dispatch = useDispatch();
   const param = Number(useParams().userId);
@@ -60,7 +61,7 @@ function Diary() {
           {diaries?.map((diary) => (
             <div key={diary.diaryId}>
               <PostInfo>
-                <PostDate>{diary.updatedAt.split("T")[0]}</PostDate>
+                <PostDate>{diary.updatedAt.split(" ")[0]}</PostDate>
                 <PostNum>No.{diary.diaryNo}</PostNum>
                 <PostEditBox>
                   <button
@@ -70,6 +71,7 @@ function Diary() {
                       fontSize: "0.7rem",
                       marginLeft: "5px",
                       cursor: "pointer",
+                      marginTop: "10px",
                     }}
                   >
                     삭제
@@ -156,10 +158,12 @@ const PostInfo = styled.div`
 
 const PostDate = styled.div`
   font-size: 0.8rem;
+  margin-top: 10px;
 `;
 const PostNum = styled.div`
   margin-left: 10px;
   font-size: 0.8rem;
+  margin-top: 10px;
 `;
 
 const DiaryImg = styled.div`

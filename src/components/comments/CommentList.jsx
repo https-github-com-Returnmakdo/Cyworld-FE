@@ -13,12 +13,9 @@ function CommentList({ diaryId }) {
     comment: "",
   });
   const { comments } = useSelector((state) => state.comments);
+  console.log("com", comments);
   const dispatch = useDispatch();
   const param = Number(useParams().userId);
-
-  useEffect(() => {
-    dispatch(__getComment({ diaryId, param }));
-  }, [dispatch, diaryId, param]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +26,11 @@ function CommentList({ diaryId }) {
     const result = window.confirm("정말 삭제하시겠습니까? 😢");
     if (!result) return;
     dispatch(__deleteComment({ commentId, diaryId }));
-    dispatch(__getComment({ diaryId, param }));
+    Swal.fire({
+      icon: "success",
+      title: "삭제 완료!",
+    });
+    dispatch(__getComment(param));
   };
 
   const onEdit = () => {
@@ -43,14 +44,19 @@ function CommentList({ diaryId }) {
       icon: "success",
       title: "수정 완료!",
     });
+    dispatch(__getComment(param));
   };
+
+  useEffect(() => {
+    dispatch(__getComment(param));
+  }, [dispatch, param]);
 
   return (
     <CommentListBox>
-      {comments.data?.map((comm) =>
+      {comments?.map((comm) =>
         comm.diaryId === diaryId ? (
           <div style={{ display: "flex" }} key={comm.commentId}>
-            <div style={{ fontSize: "0.7rem", marginRight: "10px", marginTop: "3px", marginLeft: "2px" }}>{comm.name}</div>
+            <div style={{ width: "40px", fontSize: "0.7rem", marginTop: "3px", marginLeft: "2px" }}>{comm.name}</div>
             <Comment onChange={onChange} name="comment" placeholder={comm.comment} value={input.comment} disabled={disable} />
             {disable ? (
               <CommentEdit>
@@ -104,15 +110,14 @@ const CommentListBox = styled.div`
   margin: 5px auto auto 14px;
   padding: 5px;
   display: inline-block;
-  overflow-y: scroll;
 `;
 
 const Comment = styled.input`
-  width: 75%;
+  width: 400px;
   height: 20px;
   padding: 2px;
   margin-bottom: 5px;
-  border: 1px solid #cdd5d8;
+  margin-left: 10px;
   font-size: 0.8rem;
   font-weight: bold;
 `;
@@ -120,7 +125,7 @@ const Comment = styled.input`
 const CommentEdit = styled.button`
   width: 33px;
   height: 20px;
-  margin-left: 5px;
+  margin-left: 20px;
   vertical-align: middle;
   background-color: #ffffff;
   border: none;
@@ -130,7 +135,6 @@ const CommentEdit = styled.button`
 const CommentDelete = styled.button`
   width: 33px;
   height: 20px;
-  margin-left: 5px;
   vertical-align: middle;
   background-color: #ffffff;
   border: none;

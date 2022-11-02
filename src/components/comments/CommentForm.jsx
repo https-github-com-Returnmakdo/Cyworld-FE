@@ -23,7 +23,7 @@ function CommentForm({ diaryId }) {
       icon: "success",
       title: "작성 완료!",
     });
-    dispatch(__getComment({ diaryId, param }));
+    dispatch(__getComment(param));
   };
 
   const onChange = (e) => {

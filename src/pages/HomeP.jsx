@@ -4,14 +4,20 @@ import Main from "../components/main/Main";
 import Diary from "../components/diaries/Diary";
 import Guestbook from "../components/guestbooks/GuestBook";
 import Profile from "../components/profile/Profile";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { removeCookie } from "../shared/Cookies";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Slider from "../slider/Slider";
+import ControlPanel from "../components/controls/ControlPanel";
+import "./player.css";
+import song from "../slider/프리스타일_Y.mp3";
+//import song1 from "../slider/izi_응급실.mp3";
 
 function HomeP() {
   useEffect(() => {
     userHome();
+    play();
   }, []);
 
   const SERVER = process.env.REACT_APP_SERVER;
@@ -47,6 +53,43 @@ function HomeP() {
     window.location.replace("/");
   };
 
+  //플레이어관리
+  const [percentage, setPercentage] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const audioRef = useRef();
+
+  const onChange = (e) => {
+    const audio = audioRef.current;
+    audio.currentTime = (audio.duration / 100) * e.target.value;
+    setPercentage(e.target.value);
+  };
+
+  const play = () => {
+    const audio = audioRef.current;
+    audio.volume = 0.1;
+
+    if (!isPlaying) {
+      setIsPlaying(true);
+      audio.play();
+    }
+
+    if (isPlaying) {
+      setIsPlaying(false);
+      audio.pause();
+    }
+  };
+
+  const getCurrDuration = (e) => {
+    const percent = ((e.currentTarget.currentTime / e.currentTarget.duration) * 100).toFixed(2);
+    const time = e.currentTarget.currentTime;
+
+    setPercentage(+percent);
+    setCurrentTime(time.toFixed(2));
+  };
+
   return (
     <Layout>
       <Outline>
@@ -77,6 +120,27 @@ function HomeP() {
           </Page>
         </Dot>
       </Outline>
+      <div className="app-container">
+        <h1>프리스타일 - Y</h1>
+        <Slider onChange={onChange} percentage={percentage} />
+        <audio
+          ref={audioRef}
+          src={song}
+          onTimeUpdate={getCurrDuration}
+          onLoadedData={(e) => {
+            setDuration(e.currentTarget.duration.toFixed(2));
+          }}
+        ></audio>
+        {/*<audio
+          ref={audioRef}
+          src={song1}
+          onTimeUpdate={getCurrDuration}
+          onLoadedData={(e) => {
+            setDuration(e.currentTarget.duration.toFixed(2));
+          }}
+        ></audio>*/}
+        <ControlPanel play={play} isPlaying={isPlaying} duration={duration} currentTime={currentTime} />
+      </div>
     </Layout>
   );
 }
@@ -90,7 +154,7 @@ const Outline = styled.div`
   width: 960px;
   height: 660px;
   top: 50%;
-  left: 40%;
+  left: 50%;
   transform: translate(-50%, -50%);
   position: relative;
   display: block;
