@@ -30,6 +30,7 @@ const PostModal = (props) => {
     }
   }, [image]);
 
+  // 포스트 등록
   const onSubmit = async (data) => {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
