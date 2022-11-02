@@ -35,7 +35,7 @@ function BookWrite({ getBook }) {
         console.log(e);
         Swal.fire({
           icon: "error",
-          title: `${e.response.data.msg}`,
+          title: `${e.response.data.errorMessage}`,
         });
       });
     getBook();

@@ -84,10 +84,7 @@ function GuestBook() {
                       }}
                     />
                   </UserHome>
-                  <BooksDate>
-                    ({item.createdAt.split("T")[0]}{" "}
-                    {item.createdAt.split("T")[1].split(".")[0]})
-                  </BooksDate>
+                  <BooksDate>({item.createdAt})</BooksDate>
                 </div>
                 <BooksButton>
                   <button

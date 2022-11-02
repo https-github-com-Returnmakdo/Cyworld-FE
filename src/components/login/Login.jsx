@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { setCookie } from "../../shared/Cookies";
+import { setCookie, decodeCookie, removeCookie } from "../../shared/Cookies";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function Login({ setBtn }) {
   const SERVER = process.env.REACT_APP_SERVER;
@@ -15,18 +16,32 @@ function Login({ setBtn }) {
   };
   const navigate = useNavigate();
 
+  const [user, setUser] = useState();
+  const decode = decodeCookie("accessToken");
+  console.log(decode);
+  // 홈페이지 미니룸 설정 가져오기
+  function userHome() {
+    if (Number(decode?.userId)) {
+      axios.get(`${SERVER}/users/myhome/${decode.userId}`).then((res) => {
+        console.log(res);
+        setUser(res.data.data);
+      });
+    }
+  }
+
   //로그인하기
   function signin(data) {
     axios
       .post(`${SERVER}/users/login`, data)
       .then((res) => {
-        const userId = res.data.userId;
+        // const userId = res.data.userId;
         const accessToken = res.data.accesstoken;
         const refreshToken = res.data.refreshtoken;
         setCookie("accessToken", accessToken);
         setCookie("refreshToken", refreshToken);
         if (res.statusText === "OK") {
-          navigate(`/HomeP/${userId}`);
+          window.location.reload();
+          // navigate(`/HomeP/${userId}`);
         }
       })
       .catch((error) => {
@@ -49,33 +64,69 @@ function Login({ setBtn }) {
     });
   }
 
+  //로그아웃 버튼
+  const logout = () => {
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    userHome();
+  }, []);
+
   return (
     <LogBox>
-      <form onSubmit={handleSubmit(signin)}>
-        <StLogin>
-          <p>로그인</p>
-          <input
-            type="email"
-            placeholder="example@cyworld.com"
-            autoComplete="on"
-            required
-            {...register("email")}
-          />
-          <PassBox>
+      {Number(user?.userId) ? (
+        <UserBox>
+          <p>{user?.name}님 반갑습니다.</p>
+          <UserDisplay>
+            <img
+              src={
+                user?.gender === "남자" ? "/image/001.png" : "/image/002.png"
+              }
+              alt="미니미"
+            />
+            <Myhome
+              onClick={() => {
+                navigate(`/HomeP/${user.userId}`);
+              }}
+            >
+              마이 미니홈피 <br />
+              바로가기
+            </Myhome>
+          </UserDisplay>
+        </UserBox>
+      ) : (
+        <form onSubmit={handleSubmit(signin)}>
+          <StLogin>
+            <p>로그인</p>
             <input
-              type="password"
-              placeholder="비밀번호"
+              type="email"
+              placeholder="example@cyworld.com"
               autoComplete="on"
               required
-              {...register("password")}
+              {...register("email")}
             />
-            <button type="submit">로그인</button>
-          </PassBox>
-        </StLogin>
-      </form>
+            <PassBox>
+              <input
+                type="password"
+                placeholder="비밀번호"
+                autoComplete="on"
+                required
+                {...register("password")}
+              />
+              <button type="submit">로그인</button>
+            </PassBox>
+          </StLogin>
+        </form>
+      )}
       <ButtonBox>
         <button onClick={onSignBtn}>회원가입</button>
         <button className="leftBtn">도토리 충전하기</button>
+        <button className="leftBtn" onClick={logout}>
+          로그아웃
+        </button>
       </ButtonBox>
       <RandomHome onClick={surfing}>미니홈피 구경가기 🏠</RandomHome>
     </LogBox>
@@ -145,4 +196,41 @@ const LogBox = styled.div`
 /*버튼정렬*/
 const ButtonBox = styled.div`
   display: felx;
+`;
+
+/*로그인 했을때 띄워주는 박스 */
+const UserBox = styled.div`
+  border: 1px solid #6d6d6d;
+  border-radius: 7px;
+  margin: 20px 0px;
+  padding: 10px;
+  width: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  p {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ff6500;
+  }
+`;
+
+const UserDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+const Myhome = styled.button`
+  border: 1px solid #6d6d6d;
+  border-radius: 7px;
+  padding: 8px 15px 8px 15px;
+  background-color: #ff6500;
+  color: white;
+  :hover {
+    background-color: #ff9c59;
+    cursor: pointer;
+  }
 `;
