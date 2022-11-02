@@ -21,6 +21,7 @@ function GuestBook() {
     axios
       .get(`${SERVER}/guestbooks/${param.userId}`)
       .then((res) => {
+        console.log(res);
         setMyeng(res.data.data);
       })
       .catch((e) => {
@@ -63,7 +64,7 @@ function GuestBook() {
   return (
     <PageBox>
       <Content>
-        <BookWrite getBook={getBook} myeng={myeng} />
+        <BookWrite getBook={getBook} />
         {myeng?.map((item) => {
           return (
             <BooksBox key={item.guestBookId}>
@@ -74,7 +75,14 @@ function GuestBook() {
                   </BooksNum>
                   <BooksUser> {item.name}</BooksUser>
                   <UserHome>
-                    <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon
+                      icon={faHouse}
+                      onClick={() => {
+                        window.open(
+                          `http://localhost:3000/HomeP/${item.writerId}`
+                        );
+                      }}
+                    />
                   </UserHome>
                   <BooksDate>({item.createdAt})</BooksDate>
                 </div>
@@ -90,7 +98,11 @@ function GuestBook() {
               </BooksTitle>
               <UserBook>
                 <UserPic>
-                  <img src="/image/example.gif" alt="방명록미니미" className="userMinimi" />
+                  <img
+                    src={item.bookImage}
+                    alt="방명록미니미"
+                    className="userMinimi"
+                  />
                 </UserPic>
                 <UserWrite>{item.guestBook}</UserWrite>
               </UserBook>

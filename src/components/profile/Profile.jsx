@@ -14,17 +14,29 @@ function Profile() {
   const SERVER = process.env.REACT_APP_SERVER;
   const [user, setUser] = useState();
   const param = useParams();
+
   //홈페이지 미니룸 설정 가져오기
   function userHome() {
     axios.get(`${SERVER}/users/myhome/${param.userId}`).then((res) => {
+      console.log(res);
       setUser(res.data.data);
+    });
+  }
+
+  //랜덤 파도타기
+  function surfing() {
+    axios.get(`${SERVER}/users/surfing`).then((res) => {
+      const random = res.data.data;
+      window.open(`http://localhost:3000/HomeP/${random}`);
+      //https://cyworld-client.vercel.app
     });
   }
 
   return (
     <PageBox>
       <Today>
-        Today<span style={{ color: "red" }}> 10</span> | Total 999
+        Today<span style={{ color: "red" }}> {user?.today}</span> | Total{" "}
+        {user?.total}
       </Today>
       <ProfBox>
         <DayOfTheWeek>
@@ -35,7 +47,7 @@ function Profile() {
         </RandomImage>
         <Intro>난... ㄱ ㅏ끔... 눈물을 흘린 ㄷ ㅏ...</Intro>
         <History>히스토리</History>
-        <Pado>파도타기</Pado>
+        <Pado onClick={surfing}>파도타기</Pado>
         <UserName>
           {user?.name}
           <FontAwesomeIcon

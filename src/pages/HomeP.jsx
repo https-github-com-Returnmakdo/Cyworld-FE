@@ -46,10 +46,8 @@ function HomeP() {
     guestbook: <Guestbook />,
   };
 
-  //로그아웃 버튼
-  const logout = () => {
-    removeCookie("accesstoken");
-    removeCookie("refreshtoken");
+  //메인가기 버튼
+  const gomain = () => {
     window.location.replace("/");
   };
 
@@ -101,19 +99,33 @@ function HomeP() {
                 <UserTitle>{user?.name}님의 미니홈피</UserTitle>
                 <Userdomain>
                   www.cyworld/3조.com
-                  <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
+                  <LogoutBtn onClick={gomain}>메인가기</LogoutBtn>
                 </Userdomain>
               </Domain>
               {content && <div>{selectComponent[content]}</div>}
             </div>
             <Menu>
-              <MenuButton className={content === "main" ? "active" : ""} onClick={handleClickButton} name="main">
+              <MenuButton
+                className={content === "main" ? "active" : ""}
+                onClick={handleClickButton}
+                name="main"
+              >
                 홈
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} className={content === "diary" ? "active" : ""} onClick={handleClickButton} name="diary">
+              <MenuButton
+                style={{ marginTop: "2px" }}
+                className={content === "diary" ? "active" : ""}
+                onClick={handleClickButton}
+                name="diary"
+              >
                 다이어리
               </MenuButton>
-              <MenuButton style={{ marginTop: "2px" }} className={content === "guestbook" ? "active" : ""} onClick={handleClickButton} name="guestbook">
+              <MenuButton
+                style={{ marginTop: "2px" }}
+                className={content === "guestbook" ? "active" : ""}
+                onClick={handleClickButton}
+                name="guestbook"
+              >
                 방명록
               </MenuButton>
             </Menu>
