@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faPencil,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import PostModal from "../modal/PostModal";
 import { useDispatch, useSelector } from "react-redux";
 import { __deleteDiary, __getDiary } from "../../redux/module/diaries";
 import CommentForm from "../comments/CommentForm";
 import CommentList from "../comments/CommentList";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Diary() {
   const [Modal, setModal] = useState(false);
   const { diaries } = useSelector((state) => state.diaries);
 
   const dispatch = useDispatch();
+  const param = Number(useParams().userId);
 
   const openModal = () => {
     setModal(true);
@@ -29,14 +27,17 @@ function Diary() {
   const onDelete = (diaryId) => {
     const result = window.confirm("정말 삭제하시겠습니까? 😢");
     if (!result) return;
-    dispatch(__deleteDiary(diaryId));
-    alert("삭제 완료!");
-    dispatch(__getDiary());
+    dispatch(__deleteDiary({ diaryId, param }));
+    Swal.fire({
+      icon: "success",
+      title: "삭제 완료!",
+    });
+    dispatch(__getDiary(param));
   };
 
   useEffect(() => {
-    dispatch(__getDiary());
-  }, [dispatch]);
+    dispatch(__getDiary(param));
+  }, [dispatch, param]);
 
   return (
     <PageBox>
@@ -54,9 +55,9 @@ function Diary() {
               }}
               onClick={openModal}
             />
-            <PostModal open={Modal} close={closeModal} allDiary={diaries} />
           </Posting>
-          {diaries.data?.map((diary) => (
+          <PostModal open={Modal} close={closeModal} allDiaryId={diaries} />
+          {diaries?.map((diary) => (
             <div key={diary.diaryId}>
               <PostInfo>
                 <PostDate>{diary.updatedAt.split("T")[0]}</PostDate>
@@ -76,11 +77,7 @@ function Diary() {
                 </PostEditBox>
               </PostInfo>
               <DiaryImg>
-                <img
-                  alt="postImage"
-                  style={{ width: "100%", height: "100%" }}
-                  src={diary.dirImg}
-                />
+                <img alt="postImage" style={{ width: "100%", height: "100%" }} src={diary.dirImg} />
               </DiaryImg>
               <PostContent>{diary.content}</PostContent>
               <CommentForm diaryId={diary.diaryId} />
@@ -175,8 +172,9 @@ const PostContent = styled.div`
   width: 95%;
   height: 100px;
   margin: 5px auto auto auto;
-  padding: 5px;
+  padding: 15px;
   display: flex;
   border: 1px solid #cdd5d8;
+  border-radius: 10px;
   font-size: 0.8rem;
 `;

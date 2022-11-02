@@ -1,12 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getCookie } from "../../shared/Cookies";
+
 const SERVER = process.env.REACT_APP_SERVER;
+
+const accessToken = getCookie("accessToken");
+const refreshToken = getCookie("refreshToken");
+const headers = {
+  accessToken,
+  refreshToken,
+};
 
 // Diary 가져오기
 export const __getDiary = createAsyncThunk("diaries/getDiary", async (payload, thunkAPI) => {
   try {
-    const { data } = await axios.get("http://3.34.122.31/api/diaries/1");
-    return thunkAPI.fulfillWithValue(data);
+    const { data } = await axios.get(`${SERVER}/diaries/${payload}`, { headers });
+    return thunkAPI.fulfillWithValue(data.data);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }
@@ -15,7 +24,7 @@ export const __getDiary = createAsyncThunk("diaries/getDiary", async (payload, t
 // Diary 삭제
 export const __deleteDiary = createAsyncThunk("diaries/deleteDiary", async (payload, thunkAPI) => {
   try {
-    await axios.delete(`http://3.34.122.31/api/diaries/${payload}/1`);
+    await axios.delete(`${SERVER}/diaries/${payload.diaryId}/${payload.param}`, { headers });
     return thunkAPI.fulfillWithValue(payload);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
@@ -26,7 +35,7 @@ export const __deleteDiary = createAsyncThunk("diaries/deleteDiary", async (payl
 export const __editDiary = createAsyncThunk("diaries/editDiary", async (payload, thunkAPI) => {
   // payload로 diaryId가 와야함
   try {
-    const { data } = await axios.put(`http://3.34.122.31/api/diaries/${payload}/1`, payload);
+    const { data } = await axios.put(`${SERVER}/diaries/${payload}/${payload.param}`, payload, { headers });
     return thunkAPI.fulfillWithValue(data);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
@@ -60,7 +69,7 @@ const diariesSlice = createSlice({
     },
     [__deleteDiary.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.diaries = state.diaries.data.filter((diary) => diary.diaryId !== action.payload);
+      state.diaries = state.diaries.filter((diary) => diary.diaryId !== action.payload.diaryId);
     },
     [__deleteDiary.rejected]: (state, action) => {
       state.isLoading = false;
