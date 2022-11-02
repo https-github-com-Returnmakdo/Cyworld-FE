@@ -7,17 +7,19 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function Main() {
-  // 유저 정보 가져오기
-  useEffect(() => {
-    userHome();
-    illChonGet();
-  }, []);
-
   const { register, handleSubmit } = useForm();
   const SERVER = process.env.REACT_APP_SERVER;
   const param = useParams();
+
+  //성별 설정
   const [gender, setGender] = useState();
+
+  //일촌평 받아오기
   const [chon, setChon] = useState();
+
+  //쿠키설정
+  const accessToken = getCookie("accessToken");
+  const refreshToken = getCookie("refreshToken");
 
   //홈페이지 미니룸 설정 가져오기
   function userHome() {
@@ -27,10 +29,8 @@ function Main() {
   }
 
   //일촌평 작성하기
-  function illChonWrite(data) {
-    const accesstoken = getCookie("accesstoken");
-    const refreshtoken = getCookie("refreshtoken");
-    axios
+  async function illChonWrite(data) {
+    await axios
       .post(`${SERVER}/bests/${param.userId}`, data, {
         headers: {
           accesstoken,
@@ -49,20 +49,12 @@ function Main() {
           title: `${e.response.data.msg}`,
         });
       });
-  }
-
-  //일촌평 조회하기
-  function illChonGet() {
-    axios.get(`${SERVER}/bests/${param.userId}`).then((res) => {
-      setChon(res.data.data);
-    });
+    illChonGet();
   }
 
   //일촌평 삭제하기
-  function illChonDelete(e) {
-    const accesstoken = getCookie("accesstoken");
-    const refreshtoken = getCookie("refreshtoken");
-    axios
+  async function illChonDelete(e) {
+    await axios
       .delete(`${SERVER}/bests/${e}/${param.userId}`, {
         headers: {
           accesstoken,
@@ -81,7 +73,21 @@ function Main() {
           title: `${e.response.data.msg}`,
         });
       });
+    illChonGet();
   }
+
+  //일촌평 조회하기
+  function illChonGet() {
+    axios.get(`${SERVER}/bests/${param.userId}`).then((res) => {
+      setChon(res.data.data);
+    });
+  }
+
+  // 유저 정보 가져오기
+  useEffect(() => {
+    userHome();
+    illChonGet();
+  }, []);
 
   return (
     <PageBox>
