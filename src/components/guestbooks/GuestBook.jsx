@@ -14,7 +14,6 @@ function GuestBook() {
   const [myeng, setMyeng] = useState();
   const accessToken = getCookie("accessToken");
   const refreshToken = getCookie("refreshToken");
-  const num = Math.ceil(Math.random() * 9) + "";
 
   //방명록 가져오기
   function getBook() {

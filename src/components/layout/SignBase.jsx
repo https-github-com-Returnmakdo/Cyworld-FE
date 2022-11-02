@@ -37,9 +37,9 @@ const SignBox = styled.div`
   border-radius: 7px;
   border: 1px solid #6d6d6d;
   padding: 15px;
-  width: 350px;
-  min-width: 350px;
-  height: 550px;
+  width: 370px;
+  min-width: 370px;
+  height: 600px;
 `;
 
 //로그이미지와 로그인 박스 정렬
