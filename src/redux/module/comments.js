@@ -1,10 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getCookie } from "../../shared/Cookies";
+
+const SERVER = process.env.REACT_APP_SERVER;
+
+const accessToken = getCookie("accessToken");
+const refreshToken = getCookie("refreshToken");
+const headers = {
+  accessToken,
+  refreshToken,
+};
 
 // 댓글 추가
 export const __addComment = createAsyncThunk("comments/addComment", async (payload, thunkApi) => {
   try {
-    const { data } = await axios.post(`http://3.34.122.31/api/diaries/comments/${payload.diaryId}/1`, payload);
+    const { data } = await axios.post(`${SERVER}/diaries/comments/${payload.diaryId}/${payload.param}`, payload, { headers });
     return thunkApi.fulfillWithValue(data);
   } catch (e) {
     return thunkApi.rejectWithValue(e);
@@ -14,7 +24,27 @@ export const __addComment = createAsyncThunk("comments/addComment", async (paylo
 // 댓글 불러오기
 export const __getComment = createAsyncThunk("comments/getComment", async (payload, thunkApi) => {
   try {
-    const { data } = await axios.get(`http://3.34.122.31/api/diaries/comments/1`);
+    const { data } = await axios.get(`${SERVER}/diaries/comments/${payload.param}`, { headers });
+    return thunkApi.fulfillWithValue(data);
+  } catch (e) {
+    return thunkApi.rejectWithValue(e);
+  }
+});
+
+// 댓글 삭제
+export const __deleteComment = createAsyncThunk("comments/deleteComment", async (payload, thunkApi) => {
+  try {
+    await axios.delete(`${SERVER}/diaries/comments/${payload.diaryId}/${payload.commentId}`, { headers });
+    return thunkApi.fulfillWithValue(payload);
+  } catch (e) {
+    return thunkApi.rejectWithValue(e);
+  }
+});
+
+// 댓글 수정
+export const __editSave = createAsyncThunk("comments/editSave", async (payload, thunkApi) => {
+  try {
+    const { data } = await axios.put(`${SERVER}/diaries/comments/${payload.diaryId}/${payload.commentId}`, { headers });
     return thunkApi.fulfillWithValue(data);
   } catch (e) {
     return thunkApi.rejectWithValue(e);
@@ -22,13 +52,13 @@ export const __getComment = createAsyncThunk("comments/getComment", async (paylo
 });
 
 const initialState = {
-  comment: [],
+  comments: [],
   isLoading: false,
   error: null,
 };
 
 export const commentsSlice = createSlice({
-  name: "comment",
+  name: "comments",
   initialState,
   reducers: {},
   extraReducers: {
@@ -37,7 +67,7 @@ export const commentsSlice = createSlice({
     },
     [__addComment.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.comment = [action.payload, ...state.comment];
+      state.comments = action.payload.data;
     },
     [__addComment.rejected]: (state, action) => {
       state.isLoading = false;
@@ -48,11 +78,27 @@ export const commentsSlice = createSlice({
     },
     [__getComment.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.comment = action.payload;
+      state.comments = action.payload;
     },
     [__getComment.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+    },
+    [__deleteComment.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [__deleteComment.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.comments = state.comments.data.filter((comment) => comment.diaryId !== action.payload);
+    },
+    [__deleteComment.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [__editSave.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      const idx = state.comments.data.findIndex((comment) => comment.diaryId === action.payload);
+      state.comments[idx] = action.payload;
     },
   },
 });

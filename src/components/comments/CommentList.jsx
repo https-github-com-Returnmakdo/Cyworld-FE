@@ -1,30 +1,94 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTrashCan, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { __getComment } from "../../redux/module/comments";
+import { __deleteComment, __editSave, __getComment } from "../../redux/module/comments";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function CommentList({ diaryId }) {
-  const { comment } = useSelector((state) => state.comments);
+  const [disable, setDisable] = useState(true);
+  const [input, setInput] = useState({
+    comment: "",
+  });
+  const { comments } = useSelector((state) => state.comments);
   const dispatch = useDispatch();
+  const param = Number(useParams().userId);
 
   useEffect(() => {
-    dispatch(__getComment(diaryId));
-  }, []);
+    dispatch(__getComment({ diaryId, param }));
+  }, [dispatch, diaryId, param]);
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onDelete = (commentId) => {
+    const result = window.confirm("정말 삭제하시겠습니까? 😢");
+    if (!result) return;
+    dispatch(__deleteComment({ commentId, diaryId }));
+    dispatch(__getComment({ diaryId, param }));
+  };
+
+  const onEdit = () => {
+    setDisable(false);
+  };
+
+  const EditSave = (commentId) => {
+    dispatch(__editSave({ commentId, diaryId, ...input }));
+    setDisable(true);
+    Swal.fire({
+      icon: "success",
+      title: "수정 완료!",
+    });
+  };
 
   return (
     <CommentListBox>
-      {comment.data?.map((comm) =>
+      {comments.data?.map((comm) =>
         comm.diaryId === diaryId ? (
           <div style={{ display: "flex" }} key={comm.commentId}>
-            <Comment>{comm.comment}</Comment>
-            <CommentEdit>
-              <FontAwesomeIcon icon={faPencil} style={{ marginTop: "-1px" }} />
-            </CommentEdit>
-            <CommentDelete>
-              <FontAwesomeIcon icon={faTrashCan} style={{ marginTop: "-1px" }} />
-            </CommentDelete>
+            <div style={{ fontSize: "0.7rem", marginRight: "10px", marginTop: "3px", marginLeft: "2px" }}>{comm.name}</div>
+            <Comment onChange={onChange} name="comment" placeholder={comm.comment} value={input.comment} disabled={disable} />
+            {disable ? (
+              <CommentEdit>
+                <FontAwesomeIcon onClick={onEdit} icon={faPencil} style={{ marginTop: "-1px" }} />
+              </CommentEdit>
+            ) : (
+              <CommentEdit>
+                <FontAwesomeIcon
+                  onClick={() => {
+                    EditSave(comm.commentId);
+                  }}
+                  icon={faCheck}
+                  style={{ marginTop: "-1px" }}
+                />
+              </CommentEdit>
+            )}
+            {disable ? (
+              <CommentDelete>
+                <FontAwesomeIcon
+                  onClick={() => {
+                    onDelete(comm.commentId);
+                  }}
+                  icon={faTrashCan}
+                  style={{ marginTop: "-1px" }}
+                />
+              </CommentDelete>
+            ) : (
+              <CommentDelete>
+                <FontAwesomeIcon
+                  onClick={() => {
+                    setInput(comm.comment);
+                    setDisable(true);
+                  }}
+                  icon={faXmark}
+                  style={{ marginTop: "-1px" }}
+                />
+              </CommentDelete>
+            )}
           </div>
         ) : null
       )}
@@ -40,16 +104,17 @@ const CommentListBox = styled.div`
   margin: 5px auto auto 14px;
   padding: 5px;
   display: inline-block;
-  border: 1px solid #cdd5d8;
   overflow-y: scroll;
 `;
 
-const Comment = styled.div`
-  width: 100%;
+const Comment = styled.input`
+  width: 75%;
   height: 20px;
   padding: 2px;
+  margin-bottom: 5px;
   border: 1px solid #cdd5d8;
   font-size: 0.8rem;
+  font-weight: bold;
 `;
 
 const CommentEdit = styled.button`

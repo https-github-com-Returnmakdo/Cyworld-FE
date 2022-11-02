@@ -55,21 +55,9 @@ function Login({ setBtn }) {
       <form onSubmit={handleSubmit(signin)}>
         <StLogin>
           <p>로그인</p>
-          <input
-            type="email"
-            placeholder="example@cyworld.com"
-            autoComplete="on"
-            required
-            {...register("email")}
-          />
+          <input type="email" placeholder="example@cyworld.com" autoComplete="on" required {...register("email")} />
           <PassBox>
-            <input
-              type="password"
-              placeholder="비밀번호"
-              autoComplete="on"
-              required
-              {...register("password")}
-            />
+            <input type="password" placeholder="비밀번호" autoComplete="on" required {...register("password")} />
             <button type="submit">로그인</button>
           </PassBox>
         </StLogin>

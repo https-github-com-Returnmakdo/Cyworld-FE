@@ -5,9 +5,13 @@ import "./PostModal.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { __getDiary } from "../../redux/module/diaries";
+import { useParams } from "react-router-dom";
+import { getCookie } from "../../shared/Cookies";
+import Swal from "sweetalert2";
 
 const PostModal = (props) => {
-  const { open, close, allDiary } = props;
+  const SERVER = process.env.REACT_APP_SERVER;
+  const { open, close, allDiaryId } = props;
   const {
     register,
     handleSubmit,
@@ -15,6 +19,7 @@ const PostModal = (props) => {
     watch,
   } = useForm();
   const dispatch = useDispatch();
+  const param = useParams().userId;
 
   const [imagePreview, setImagePreview] = useState("");
   const image = watch("dirImg");
@@ -26,7 +31,9 @@ const PostModal = (props) => {
   }, [image]);
 
   const onSubmit = async (data) => {
-    const diaryNo = Number(allDiary.data[0].diaryNo) + 1;
+    const accessToken = getCookie("accessToken");
+    const refreshToken = getCookie("refreshToken");
+    const diaryNo = allDiaryId.length + 1;
     const content = data.content;
     const dirImg = data.dirImg[0];
     const formData = new FormData();
@@ -35,20 +42,30 @@ const PostModal = (props) => {
     formData.append("diaryNo", diaryNo);
     await axios({
       method: "POST",
-      url: "http://3.34.122.31/api/diaries/1",
+      url: `${SERVER}/diaries/${param}`,
       mode: "cors",
       headers: {
         "Content-Type": "multipart/form-data",
+        accessToken,
+        refreshToken,
       },
       data: formData,
-    }).then((res) => {
-      if (res.status === 200) {
+    })
+      .then((res) => {
         console.log(res);
-      }
-    });
-    alert("작성 완료!");
+        Swal.fire({
+          icon: "success",
+          title: `${res.data.msg}`,
+        });
+      })
+      .catch((e) => {
+        Swal.fire({
+          icon: "error",
+          title: `${e.response.data.msg}`,
+        });
+      });
     close();
-    dispatch(__getDiary());
+    dispatch(__getDiary(param));
   };
 
   return (

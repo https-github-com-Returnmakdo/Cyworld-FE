@@ -4,20 +4,26 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { __addComment, __getComment } from "../../redux/module/comments";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function CommentForm({ diaryId }) {
   const [input, setInput] = useState({
     comment: "",
   });
+  const param = Number(useParams().userId);
 
   const dispatch = useDispatch();
 
   const Submit = (e) => {
     e.preventDefault();
     if (input.comment.trim() === "") return alert("댓글을 입력해주세요!");
-    dispatch(__addComment({ ...input, diaryId }));
-    alert("작성 완료!");
-    dispatch(__getComment(diaryId));
+    dispatch(__addComment({ ...input, diaryId, param }));
+    Swal.fire({
+      icon: "success",
+      title: "작성 완료!",
+    });
+    dispatch(__getComment({ diaryId, param }));
   };
 
   const onChange = (e) => {
@@ -43,7 +49,6 @@ const CommentInputBox = styled.div`
   height: 30px;
   margin: 5px auto auto auto;
   padding: 5px;
-  border: 1px solid #cdd5d8;
   font-size: 0.8rem;
 `;
 
