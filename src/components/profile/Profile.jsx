@@ -18,7 +18,6 @@ function Profile() {
   //홈페이지 미니룸 설정 가져오기
   function userHome() {
     axios.get(`${SERVER}/users/myhome/${param.userId}`).then((res) => {
-      console.log(res);
       setUser(res.data.data);
     });
   }
