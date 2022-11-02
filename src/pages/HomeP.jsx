@@ -89,7 +89,7 @@ function HomeP() {
           </Page>
         </Dot>
       </Outline>
-      <div className="cincopa_responsive_iframe" style={{ marginLeft: "23px", padding: "56.25% 0 0 0", position: "relative" }}>
+      <div className="cincopa_responsive_iframe" style={{ marginLeft: "25px", marginTop: "100px", padding: "56.25% 0 0 0", position: "relative" }}>
         <div className="cincopa_responsive_wrapper" style={{ height: "100%", left: "0", position: "absolute", top: "0", width: "100%" }}>
           <iframe
             width="23%"
@@ -122,7 +122,7 @@ const Outline = styled.div`
   border: 1px solid #738186;
   width: 960px;
   height: 660px;
-  top: 50%;
+  top: 38%;
   left: 50%;
   transform: translate(-50%, -50%);
   position: relative;
