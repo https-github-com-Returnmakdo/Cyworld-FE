@@ -47,21 +47,9 @@ function BookWrite({ getBook, myeng }) {
       <BooksBase>
         <UserBook>
           <UserPic>
-            <img
-              src={`https://qportminiprojectmini.s3.ap-northeast-2.amazonaws.com/sample/${num}.gif`}
-              alt="방명록미니미"
-              type="text"
-              className="userMinimi"
-            />
+            <img src={`https://qportminiprojectmini.s3.ap-northeast-2.amazonaws.com/sample/${num}.gif`} alt="방명록미니미" type="text" className="userMinimi" />
           </UserPic>
-          <UserWrite
-            type="text"
-            rows="5"
-            maxLength="100"
-            required
-            id="bookin"
-            {...register("guestbook")}
-          />
+          <UserWrite type="text" rows="5" maxLength="100" required id="bookin" {...register("guestbook")} />
         </UserBook>
       </BooksBase>
       <ButtonBox>

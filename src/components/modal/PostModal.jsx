@@ -52,7 +52,6 @@ const PostModal = (props) => {
       data: formData,
     })
       .then((res) => {
-        console.log(res);
         Swal.fire({
           icon: "success",
           title: `${res.data.msg}`,
