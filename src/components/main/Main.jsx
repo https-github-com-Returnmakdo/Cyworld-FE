@@ -33,8 +33,8 @@ function Main() {
     await axios
       .post(`${SERVER}/bests/${param.userId}`, data, {
         headers: {
-          accesstoken,
-          refreshtoken,
+          accessToken,
+          refreshToken,
         },
       })
       .then((res) => {
@@ -57,8 +57,8 @@ function Main() {
     await axios
       .delete(`${SERVER}/bests/${e}/${param.userId}`, {
         headers: {
-          accesstoken,
-          refreshtoken,
+          accessToken,
+          refreshToken,
         },
       })
       .then((res) => {
@@ -94,11 +94,32 @@ function Main() {
       <Content>
         <Box>
           <Title>미니룸</Title>
-          <img alt="미니룸사진" src={gender === "남자" ? "/image/miniroom1.gif" : "/image/miniroom2.gif"} className="miniroom" />
-          <img alt="미니미" src={gender === "남자" ? "/image/minimi1.png" : "/image/minimi2.png"} className="minimi" />
+          <img
+            alt="미니룸사진"
+            src={
+              gender === "남자"
+                ? "/image/miniroom1.gif"
+                : "/image/miniroom2.gif"
+            }
+            className="miniroom"
+          />
+          <img
+            alt="미니미"
+            src={
+              gender === "남자" ? "/image/minimi1.png" : "/image/minimi2.png"
+            }
+            className="minimi"
+          />
           <Illchon as="form" onSubmit={handleSubmit(illChonWrite)}>
             <p>일촌평</p>
-            <input type="text" style={{ width: 65 }} placeholder="일촌명" maxLength="10" required {...register("nick")} />
+            <input
+              type="text"
+              style={{ width: 65 }}
+              placeholder="일촌명"
+              maxLength="10"
+              required
+              {...register("nick")}
+            />
             <input
               type="text"
               placeholder="일촌과 나누고 싶은 이야기를 나눠보세요~!"
@@ -117,7 +138,9 @@ function Main() {
                     · {item.ilchonpyung} ({item.nick} <span>{item.name}</span>)
                   </p>
                   <BooksButton>
-                    <button onClick={() => illChonDelete(item.ilchonpyungId)}>삭제</button>
+                    <button onClick={() => illChonDelete(item.ilchonpyungId)}>
+                      삭제
+                    </button>
                   </BooksButton>
                 </IllBox>
               );
