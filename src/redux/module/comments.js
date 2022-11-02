@@ -44,7 +44,7 @@ export const __deleteComment = createAsyncThunk("comments/deleteComment", async 
 // 댓글 수정
 export const __editSave = createAsyncThunk("comments/editSave", async (payload, thunkApi) => {
   try {
-    const { data } = await axios.put(`${SERVER}/diaries/comments/${payload.diaryId}/${payload.commentId}`, { headers });
+    const { data } = await axios.put(`${SERVER}/diaries/comments/${payload.diaryId}/${payload.commentId}`, payload, { headers });
     return thunkApi.fulfillWithValue(data);
   } catch (e) {
     return thunkApi.rejectWithValue(e);

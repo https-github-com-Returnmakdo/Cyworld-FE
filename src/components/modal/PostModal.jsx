@@ -58,9 +58,10 @@ const PostModal = (props) => {
         });
       })
       .catch((e) => {
+        console.log("e", e);
         Swal.fire({
           icon: "error",
-          title: `${e.response.data.msg}`,
+          title: `${e.response.data.err}`,
         });
       });
     close();

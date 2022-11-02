@@ -4,20 +4,14 @@ import Main from "../components/main/Main";
 import Diary from "../components/diaries/Diary";
 import Guestbook from "../components/guestbooks/GuestBook";
 import Profile from "../components/profile/Profile";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { removeCookie } from "../shared/Cookies";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Slider from "../slider/Slider";
-import ControlPanel from "../components/controls/ControlPanel";
-import "./player.css";
-import song from "../slider/프리스타일_Y.mp3";
-//import song1 from "../slider/izi_응급실.mp3";
 
 function HomeP() {
   useEffect(() => {
     userHome();
-    play();
   }, []);
 
   const SERVER = process.env.REACT_APP_SERVER;
@@ -49,43 +43,6 @@ function HomeP() {
   //메인가기 버튼
   const gomain = () => {
     window.location.replace("/");
-  };
-
-  //플레이어관리
-  const [percentage, setPercentage] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-
-  const audioRef = useRef();
-
-  const onChange = (e) => {
-    const audio = audioRef.current;
-    audio.currentTime = (audio.duration / 100) * e.target.value;
-    setPercentage(e.target.value);
-  };
-
-  const play = () => {
-    const audio = audioRef.current;
-    audio.volume = 0.1;
-
-    if (!isPlaying) {
-      setIsPlaying(true);
-      audio.play();
-    }
-
-    if (isPlaying) {
-      setIsPlaying(false);
-      audio.pause();
-    }
-  };
-
-  const getCurrDuration = (e) => {
-    const percent = ((e.currentTarget.currentTime / e.currentTarget.duration) * 100).toFixed(2);
-    const time = e.currentTarget.currentTime;
-
-    setPercentage(+percent);
-    setCurrentTime(time.toFixed(2));
   };
 
   return (
@@ -132,26 +89,25 @@ function HomeP() {
           </Page>
         </Dot>
       </Outline>
-      <div className="app-container">
-        <h1>프리스타일 - Y</h1>
-        <Slider onChange={onChange} percentage={percentage} />
-        <audio
-          ref={audioRef}
-          src={song}
-          onTimeUpdate={getCurrDuration}
-          onLoadedData={(e) => {
-            setDuration(e.currentTarget.duration.toFixed(2));
-          }}
-        ></audio>
-        {/*<audio
-          ref={audioRef}
-          src={song1}
-          onTimeUpdate={getCurrDuration}
-          onLoadedData={(e) => {
-            setDuration(e.currentTarget.duration.toFixed(2));
-          }}
-        ></audio>*/}
-        <ControlPanel play={play} isPlaying={isPlaying} duration={duration} currentTime={currentTime} />
+      <div className="cincopa_responsive_iframe" style={{ top: "-52%", marginLeft: "60px", padding: "56.25% 0 0 0", position: "relative" }}>
+        <div className="cincopa_responsive_wrapper" style={{ height: "100%", left: "0", position: "absolute", top: "0", width: "100%" }}>
+          <iframe
+            width="22%"
+            height="100%"
+            src="https://rt.cincopa.com/iframe.aspx?fid=AEFAQ6-DR_-Q"
+            frameborder="0"
+            allowfullscreen
+            scrolling="no"
+            allow="autoplay *; fullscreen *"
+          ></iframe>
+          <noscript>
+            <span>New Gallery 2022/11/3</span>
+            <span>프리스타일-y</span>
+            <span>izi-응급실</span>
+            <span>에픽하이 -love love love</span>
+            <span>mc몽 - 서커스</span>
+          </noscript>
+        </div>
       </div>
     </Layout>
   );
@@ -256,12 +212,3 @@ const LogoutBtn = styled.button`
   font-weight: 700;
   color: #2b4484;
 `;
-
-// const Bgmbox = styled.div`
-//   background-color: #ffffff;
-//   position: fixed;
-//   width: 300px;
-//   height: 100px;
-//   margin-left: 80%;
-//   margin-top: -40%;
-// `;
