@@ -79,7 +79,7 @@ function GuestBook() {
                       icon={faHouse}
                       onClick={() => {
                         window.open(
-                          `http://localhost:3000/HomeP/${item.writerId}`
+                          `https://cyworld-git-dev-hanghaeteam3.vercel.app/HomeP/${item.writerId}`
                         );
                       }}
                     />
