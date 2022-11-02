@@ -27,8 +27,9 @@ function Profile() {
   function surfing() {
     axios.get(`${SERVER}/users/surfing`).then((res) => {
       const random = res.data.data;
-      window.open(`http://localhost:3000/HomeP/${random}`);
-      //https://cyworld-client.vercel.app
+      window.open(
+        `https://cyworld-git-dev-hanghaeteam3.vercel.app/HomeP/${random}`
+      );
     });
   }
 
